@@ -1,0 +1,5 @@
+add cookies 
+validate request and check authorization...
+customize error message
+customize status code  
+only one point of response  a function that defines the response
