@@ -54,6 +54,6 @@ Investments.init(
 );
 
 
-PensionFunds.hasMany(Investments);
+
 
 export default Investments;

@@ -42,6 +42,6 @@ CaseStudyDetails.init(
   }
 );
 
-CaseStudies.hasMany(CaseStudyDetails)
+
 
 export default CaseStudyDetails;

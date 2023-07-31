@@ -43,6 +43,6 @@ PerformanceMetrics.init(
 );
 
 
-Investments.hasMany(PerformanceMetrics);
+
 
 export default PerformanceMetrics;

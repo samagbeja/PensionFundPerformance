@@ -59,8 +59,6 @@ SurveyResponses.init(
   }
 );
 
-ResearchSurveys.hasMany(SurveyResponses)
-Users.hasMany(SurveyResponses)
-SurveyQuestions.hasMany(SurveyResponses)
+
 
 export default SurveyResponses;

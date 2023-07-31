@@ -44,7 +44,6 @@ ReportAccess.init(
   }
 );
 
-Reports.hasMany(ReportAccess)
-Users.hasMany(ReportAccess)
+
 
 export default ReportAccess;

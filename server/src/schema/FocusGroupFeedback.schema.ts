@@ -47,8 +47,7 @@ FocusGroupFeedback.init(
   }
 );
 
-FocusGroupSessions.hasMany(FocusGroupFeedback)
-Users.hasMany(FocusGroupFeedback)
+
 
 
 export default FocusGroupFeedback;

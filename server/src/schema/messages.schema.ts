@@ -51,7 +51,7 @@ Messages.init(
   }
 );
 
-Stakeholders.hasMany(Messages);
+
 
 
 

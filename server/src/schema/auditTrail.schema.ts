@@ -40,6 +40,6 @@ AuditTrail.init(
   }
 );
 
-Users.hasMany(AuditTrail)
+
 
 export default AuditTrail;

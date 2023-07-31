@@ -43,6 +43,6 @@ SurveyQuestions.init(
   }
 );
 
-ResearchSurveys.hasMany(SurveyQuestions)
+
 
 export default SurveyQuestions;

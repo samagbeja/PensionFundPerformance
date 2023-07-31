@@ -40,6 +40,6 @@ Feedback.init(
   }
 );
 
-Users.hasMany(Feedback)
+
 
 export default Feedback;

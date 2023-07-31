@@ -40,6 +40,6 @@ userPreferences.init(
   }
 );
 
-Users.hasMany(userPreferences)
+
 
 export default userPreferences;

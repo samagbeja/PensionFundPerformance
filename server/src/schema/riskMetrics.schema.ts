@@ -47,7 +47,7 @@ RiskMetrics.init(
   }
 );
 
-Investments.hasMany(RiskMetrics);
+
 
 
 export default RiskMetrics;
