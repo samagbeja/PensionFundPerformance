@@ -16,7 +16,12 @@
     "composite": false,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "es2018", "esnext.asynciterable"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2018",
+      "esnext.asynciterable"
+    ],
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "strict": true,
@@ -31,16 +36,27 @@
     "noEmitOnError": true,
     "noEmit": false,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["types", "node_modules/@types"],
+    "typeRoots": [
+      "types",
+      "node_modules/@types"
+    ],
     "paths": {
-      "*": ["node_modules/*"]
+      "*": [
+        "node_modules/*"
+      ]
     }
   },
-  "lib": ["es2015"],
+  "lib": [
+    "es2015"
+  ],
   "include": [
     "src/**/*",
     "./typings/nodemailer/nodemailer.d.ts",
     "./typings/nodemailer-express-handlebars/nodemailer-express-handlebars.d.ts"
   ],
-  "exclude": ["**/node_modules", "**/*.test.ts", "**/dist/"]
+  "exclude": [
+    "**/node_modules",
+    "**/*.test.ts",
+    "**/dist/"
+  ]
 }

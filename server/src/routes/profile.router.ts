@@ -26,7 +26,7 @@ const profileRouter = (app: Express) => {
    *      200:
    *      description: App is up and running
    */
-  app.get("/", (req: Request, res: Response) => {
+  app.get("/", (_: Request, res: Response) => {
     const newUser = { id: 23, secret: 10 };
     const token = signJwt(newUser);
 

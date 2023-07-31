@@ -12,7 +12,7 @@ const testRouter = (app: Express) => {
    *       200:
    *         description: App is up and running
    */
-  app.get("/test", (req: Request, res: Response) => {
+  app.get("/test", (_: Request, res: Response) => {
     return res.status(200).json({ test: true });
   });
 };

@@ -1,4 +1,5 @@
 import 'dotenv/config';
+// @ts-ignore
 import { createLogger, transports, format } from 'winston';
 import moment from 'moment';
 import path from 'path';
@@ -16,7 +17,7 @@ const logger = createLogger({
 		}),
 		simple(),
 		printf(
-			log =>
+			(log :any) =>
 				`${log.timestamp} ${log.level}: ${
 					log.message
 				} [${getFormattedDate('DD-MMM-YYYY h:mm:ss A')}]`
