@@ -39,7 +39,7 @@ async function bootstrap() {
   sHttpServer.listen(process.env.PORT, async () => {
     console.log(`Server started on http://localhost:${process.env.PORT}`);
     //run migrations..
-    if(process.env.MIGRATE as string === '1')await migrate();
+    if ((process.env.MIGRATE as string) === "1") await migrate();
     //later...JWT
     //routes..
     routes(app);
