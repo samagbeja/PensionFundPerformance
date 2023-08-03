@@ -53,11 +53,15 @@ const Home: NextPage = () => {
     },
   ];
 
+  console.log(formstate, "formstate");
   const handleSubmit = (e: FormEvent<any>) => {
     e.preventDefault();
-    let obj = validateForm(inputArray);
-    console.log(obj);
+    let status = validateForm(inputArray, formstate, setError, setMessageObj);
+    console.log(status);
     console.log(formstate);
+    if (status) {
+      // sign up
+    }
   };
   return (
     <Container component="main" maxWidth="sm">
@@ -74,9 +78,14 @@ const Home: NextPage = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign Up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1, width: "90%" }}
+        >
           {presentForm(inputArray, formstate, setFormstate, error, messageObj)}
           <Button
             type="submit"

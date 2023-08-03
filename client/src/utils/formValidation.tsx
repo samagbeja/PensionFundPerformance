@@ -1,7 +1,13 @@
 import React, { useState, ChangeEvent } from "react";
 import TextField from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
-import { FormControl, InputLabel, MenuItem } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export interface inputType {
@@ -15,21 +21,27 @@ export interface inputType {
 interface outputType {
   [key: string]: boolean | string;
 }
-export const validateForm = (arr: inputType[]) => {
+export const validateForm = (
+  arr: inputType[],
+  formstate: any,
+  setError: any,
+  setMessageObj: any
+) => {
   let valid = true;
   let message: outputType = {};
   let error: outputType = {};
   for (let el of arr) {
+    let value = formstate[el.name];
     switch (el.type) {
       case "email":
-        if (!el.value || String(el.value).trim() === "") {
+        if (!value || String(value).trim() === "") {
           error[el.name] = true;
           message[el.name] = el?.outputName
             ? `${el?.outputName} field is blank `
             : "Empty field";
           valid = false;
         } else if (
-          !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(el.value)
+          !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
         ) {
           error[el.name] = true;
           message[el.name] = el?.outputName
@@ -39,7 +51,7 @@ export const validateForm = (arr: inputType[]) => {
         }
         break;
       default:
-        if (!el.value || String(el.value).trim() === "") {
+        if (!value || String(value).trim() === "") {
           error[el.name] = true;
           message[el.name] = el?.outputName
             ? `${el?.outputName} field is blank`
@@ -48,8 +60,9 @@ export const validateForm = (arr: inputType[]) => {
         }
     }
   }
-
-  return { valid, message, error };
+  setError(error);
+  setMessageObj(message);
+  return valid;
 };
 
 export const presentForm = (
@@ -65,39 +78,47 @@ export const presentForm = (
       case "email":
       case "password":
         return (
-          <React.Fragment key={`${idx}C`}>
+          <Box key={`${idx}C`}>
+            <Typography style={{ fontWeight: "bold", fontSize: "0.8em" }}>
+              {el.name.toUpperCase()}
+            </Typography>
             <TextField
               type={el.type}
               margin="normal"
               required
               fullWidth
-              label={el.placeholder}
-              name={el.name}
-              sx={{ borderColor: errorState[el.name] && "red" }}
+              // label={el.placeholder}
+              sx={{
+                borderColor: errorState[el.name] && "red",
+                marginTop: "1px",
+              }}
               autoComplete="off"
-              autoFocus
+              // autoFocus={idx === 0}
               value={formstate[el.name]}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setFormstate({ ...formstate, [el.name]: e.target.value })
               }
             />
             {errorState[el.name] && message[el.name] && (
-              <FormHelperText variant="error">
+              <FormHelperText
+                style={{ width: "100%", marginTop: -10, fontSize: 10 }}
+                error
+              >
                 {message[el.name]}
               </FormHelperText>
             )}
-          </React.Fragment>
+          </Box>
         );
       case "select":
         return (
-          <React.Fragment key={`${idx}C`}>
+          <Box key={`${idx}C`}>
             <FormControl sx={{ mt: 1, width: "100%" }}>
-              <InputLabel id="userType_label">{el.placeholder}</InputLabel>
+              <Typography style={{ fontWeight: "bold", fontSize: "0.8em" }}>
+                {el.name.toUpperCase()}
+              </Typography>
+              {/* <InputLabel htmlFor={el.name}>{el.placeholder}</InputLabel> */}
               <Select
-                labelId="userType_label"
-                id="userType_helper"
                 value={formstate[el.name]}
-                label="Age"
                 onChange={(e: SelectChangeEvent) =>
                   setFormstate({ ...formstate, [el.name]: e.target.value })
                 }
@@ -110,12 +131,20 @@ export const presentForm = (
                   ))}
               </Select>
               {errorState[el.name] && message[el.name] && (
-                <FormHelperText variant="error">
+                <FormHelperText
+                  style={{
+                    width: "100%",
+                    marginLeft: 0,
+
+                    fontSize: 10,
+                  }}
+                  error
+                >
                   {message[el.name]}
                 </FormHelperText>
               )}
             </FormControl>
-          </React.Fragment>
+          </Box>
         );
     }
   });
