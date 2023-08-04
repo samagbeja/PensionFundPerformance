@@ -15,9 +15,12 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Link from "next/link";
 import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import { inputType, presentForm, validateForm } from "@/utils/formValidation";
+import { useSnackbar } from "notistack";
+import api from "@/utils/api";
 
 const Home: NextPage = () => {
   const [formstate, setFormstate] = useState({} as any);
+  const { enqueueSnackbar } = useSnackbar();
   const [error, setError] = useState({} as any);
   const [messageObj, setMessageObj] = useState({} as any);
   const inputArray: inputType[] = [
@@ -54,13 +57,26 @@ const Home: NextPage = () => {
   ];
 
   console.log(formstate, "formstate");
-  const handleSubmit = (e: FormEvent<any>) => {
-    e.preventDefault();
-    let status = validateForm(inputArray, formstate, setError, setMessageObj);
-    console.log(status);
-    console.log(formstate);
-    if (status) {
-      // sign up
+  const handleSubmit = async (e: FormEvent<any>) => {
+    try {
+      e.preventDefault();
+      let status = validateForm(inputArray, formstate, setError, setMessageObj);
+      console.log(status);
+      console.log(formstate);
+      if (status) {
+        // sign up
+
+        const res: any = await api.post("signup", formstate);
+        console.log(res, "res");
+        enqueueSnackbar(res?.data?.message, {
+          variant: "success",
+        });
+      }
+    } catch (err: any) {
+      console.log("err", err?.response?.data?.message);
+      enqueueSnackbar(err?.response?.data?.message, {
+        variant: "error",
+      });
     }
   };
   return (

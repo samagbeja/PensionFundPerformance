@@ -20,7 +20,6 @@ Users.init(
     password: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      
     },
     email: {
       type: DataTypes.STRING(100),
@@ -30,7 +29,6 @@ Users.init(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    
   },
   {
     // Other model options go here
@@ -41,11 +39,22 @@ Users.init(
 );
 
 let options = {
-  field: 'password', // secret field to hash, default: 'password'
+  field: "password", // secret field to hash, default: 'password'
   rounds: 12, // used to generate bcrypt salt, default: 12
-  compare: 'authenticate', // method used to compare secrets, default: 'authenticate'
-}
+  compare: "authenticate", // method used to compare secrets, default: 'authenticate'
+};
 
 useBcrypt(Users, options);
+export interface userInput {
+  username: string;
+  password: string;
+  email: string;
+  userType: string;
+}
+
+export interface signInInput {
+  username: string;
+  password: string;
+}
 
 export default Users;

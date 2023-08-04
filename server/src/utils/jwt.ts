@@ -8,6 +8,7 @@ import fs from "fs";
 // const privateKey = Buffer.from(privateKeyStr, "base64").toString("ascii");
 // const publicKey = fs.readFileSync("pem/public.pem");
 const privateKey = fs.readFileSync("pem/private.pem");
+// const privateKey = process.env.PRIVATE_KEY as string;
 
 export function signJwt(object: Object, options?: jwt.SignOptions | undefined) {
   return jwt.sign(object, privateKey, {
