@@ -1,5 +1,14 @@
 "use client";
 import { SnackbarProvider } from "notistack";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import { store } from "@/redux/store";
+import { Provider } from "react-redux";
+import CssBaseline from "@mui/material/CssBaseline";
+import defaultTheme from "@/themes/defaultTheme";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import AuthGuard from "./components/authGuard";
 
 export const metadata = {
   title: "Pension System",
@@ -11,11 +20,22 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  let persistor = persistStore(store);
+
   return (
     <html lang="en">
-      <SnackbarProvider>
-        <body>{children}</body>
-      </SnackbarProvider>
+      <body>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            {/* <ThemeProvider theme={defaultTheme}> */}
+            {/* <CssBaseline /> */}
+            <SnackbarProvider>
+              <AuthGuard>{children}</AuthGuard>
+            </SnackbarProvider>
+            {/* </ThemeProvider> */}
+          </PersistGate>
+        </Provider>
+      </body>
     </html>
   );
 }

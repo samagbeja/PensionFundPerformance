@@ -6,14 +6,12 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
+import LinkMui from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Link from "next/link";
-import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import { inputType, presentForm, validateForm } from "@/utils/formValidation";
 import { useSnackbar } from "notistack";
 import api from "@/utils/api";
@@ -21,47 +19,30 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/user.slice";
 import { useRouter } from "next/navigation";
 
-const Signup: NextPage = () => {
-  const [formstate, setFormstate] = useState({} as any);
+const Signin: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
   const [messageObj, setMessageObj] = useState({} as any);
   const inputArray: inputType[] = [
     {
       name: "username",
       type: "text",
-      outputName: "Username",
+      outputName: "Username/Email Address",
       placeholder: "Username",
     },
-    {
-      name: "email",
-      type: "email",
-      outputName: "Email Address",
-      placeholder: "Email Address",
-    },
+
     {
       name: "password",
       type: "password",
       outputName: "Password",
       placeholder: "Password",
     },
-    {
-      name: "userType",
-      type: "select",
-      outputName: "User Type",
-      placeholder: "User Type",
-      options: [
-        "Pension Fund Manager",
-        "Pension Fund Member",
-        "Trustee",
-        "Administrator",
-      ],
-    },
   ];
 
-  console.log(formstate, "formstate");
   const handleSubmit = async (e: FormEvent<any>) => {
     try {
       e.preventDefault();
@@ -69,14 +50,14 @@ const Signup: NextPage = () => {
       console.log(status);
       console.log(formstate);
       if (status) {
-        // sign up
-
-        const res: any = await api.post("signup", formstate);
+        // sign in
+        const res: any = await api.post("signin", formstate);
         console.log(res, "res");
         enqueueSnackbar(res?.data?.message, {
           variant: "success",
         });
-        dispatch(loginUser(res?.data?.payload));
+        const { username, userId, userType, email } = res?.data?.payload;
+        dispatch(loginUser({ username, userId, userType, email }));
         router.push("/");
       }
     } catch (err: any) {
@@ -94,14 +75,14 @@ const Signup: NextPage = () => {
           borderRadius: 2,
           px: 4,
           py: 6,
-          //   marginTop: 8,
+          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign Up
+          Sign in
         </Typography>
         <Box
           component="form"
@@ -110,13 +91,18 @@ const Signup: NextPage = () => {
           sx={{ mt: 1, width: "90%" }}
         >
           {presentForm(inputArray, formstate, setFormstate, error, messageObj)}
+
+          {/* <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          /> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Submit
+            Sign In
           </Button>
           <Grid container>
             <Grid item xs>
@@ -125,7 +111,11 @@ const Signup: NextPage = () => {
               </Link> */}
             </Grid>
             <Grid item>
-              <Link href="/">{"Have an account? Sign In"}</Link>
+              <Link href="/auth/signup">
+                {/* <LinkMui variant="body2"> */}
+                {"Don't have an account? Sign Up"}
+                {/* </LinkMui> */}
+              </Link>
             </Grid>
           </Grid>
         </Box>
@@ -134,4 +124,4 @@ const Signup: NextPage = () => {
   );
 };
 
-export default Signup;
+export default Signin;
