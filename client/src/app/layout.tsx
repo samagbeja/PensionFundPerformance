@@ -6,9 +6,10 @@ import { store } from "@/redux/store";
 import { Provider } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import defaultTheme from "@/themes/defaultTheme";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import AuthGuard from "./components/authGuard";
+import AuthGuard from "../components/authGuard/index";
+import { createTheme } from "@/themes";
 
 export const metadata = {
   title: "Pension System",
@@ -21,18 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   let persistor = persistStore(store);
-
+  const theme = createTheme();
   return (
     <html lang="en">
       <body>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            {/* <ThemeProvider theme={defaultTheme}> */}
-            {/* <CssBaseline /> */}
-            <SnackbarProvider>
-              <AuthGuard>{children}</AuthGuard>
-            </SnackbarProvider>
-            {/* </ThemeProvider> */}
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <SnackbarProvider>
+                <AuthGuard>{children}</AuthGuard>
+              </SnackbarProvider>
+            </ThemeProvider>
           </PersistGate>
         </Provider>
       </body>

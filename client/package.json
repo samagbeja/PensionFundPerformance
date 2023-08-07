@@ -12,6 +12,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@heroicons/react": "^2.0.18",
     "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.14.3",
     "@reduxjs/toolkit": "^1.9.5",
@@ -22,6 +23,7 @@
     "axios": "^1.4.0",
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
+    "hoist-non-react-statics": "^3.3.2",
     "next": "13.4.12",
     "notistack": "^3.0.1",
     "postcss": "8.4.27",
@@ -31,6 +33,7 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.2",
+    "simplebar-react": "^3.2.4",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6"
   }
