@@ -10,6 +10,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import AuthGuard from "../components/authGuard/index";
 import { createTheme } from "@/themes";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata = {
   title: "Pension System",
@@ -31,7 +33,9 @@ export default function RootLayout({
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <SnackbarProvider>
-                <AuthGuard>{children}</AuthGuard>
+                <Suspense fallback={<Loading />}>
+                  <AuthGuard>{children}</AuthGuard>
+                </Suspense>
               </SnackbarProvider>
             </ThemeProvider>
           </PersistGate>

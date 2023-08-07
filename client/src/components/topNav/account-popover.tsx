@@ -27,7 +27,7 @@ export const AccountPopover = (props: AccountPopperOver) => {
   const handleSignOut = useCallback(() => {
     onClose();
     dispatch(logoutUser());
-    router.push("/auth/login");
+    router.push("/auth/signin");
   }, [onClose, router]);
 
   return (
@@ -49,7 +49,7 @@ export const AccountPopover = (props: AccountPopperOver) => {
       >
         <Typography variant="overline">Account</Typography>
         <Typography color="text.secondary" variant="body2">
-          Anika Visser
+          {user.username}
         </Typography>
       </Box>
       <Divider />

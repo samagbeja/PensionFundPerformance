@@ -125,7 +125,7 @@ const Signup: NextPage = () => {
               </Link> */}
             </Grid>
             <Grid item>
-              <Link href="/">{"Have an account? Sign In"}</Link>
+              <Link href="/auth/signin">{"Have an account? Sign In"}</Link>
             </Grid>
           </Grid>
         </Box>

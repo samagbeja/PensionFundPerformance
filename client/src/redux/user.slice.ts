@@ -26,7 +26,10 @@ const userSlice = createSlice({
       state.userType = action.payload?.userType;
     },
     logoutUser(state) {
-      state = initialState;
+      state.username = "";
+      state.email = "";
+      state.userType = "";
+      state.userId = undefined;
     },
   },
 });

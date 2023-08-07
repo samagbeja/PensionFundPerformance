@@ -92,6 +92,7 @@ export const presentForm = (
                 borderColor: errorState[el.name] && "red",
                 marginTop: "1px",
               }}
+              inputProps={{ sx: { paddingTop: "12px", paddingBottom: "12px" } }}
               autoComplete="off"
               // autoFocus={idx === 0}
               value={formstate[el.name]}
@@ -122,6 +123,9 @@ export const presentForm = (
                 onChange={(e: SelectChangeEvent) =>
                   setFormstate({ ...formstate, [el.name]: e.target.value })
                 }
+                inputProps={{
+                  sx: { paddingTop: "12px", paddingBottom: "12px" },
+                }}
               >
                 {el.options &&
                   el.options.map((item: string, nidx: number) => (
