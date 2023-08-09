@@ -73,10 +73,10 @@ export const SideNav = (props: SideNavInterface) => {
           >
             <div>
               <Typography color="inherit" variant="subtitle1">
-                Devias
+                Pension
               </Typography>
               <Typography color="neutral.400" variant="body2">
-                Production
+                System
               </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>
@@ -114,6 +114,7 @@ export const SideNav = (props: SideNavInterface) => {
                   key={item.title}
                   path={item.path}
                   title={item.title}
+                  type={item.type}
                 />
               );
             })}

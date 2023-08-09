@@ -4,6 +4,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import {
   Box,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Typography,
@@ -65,22 +66,36 @@ export const validateForm = (
   return valid;
 };
 
+const BoxWrapper = ({ children }: { children: React.ReactNode }) => (
+  <Box>{children}</Box>
+);
+const GridWrapper = ({ children }: { children: React.ReactNode }) => (
+  <Grid xs={12} md={6} sx={{ paddingLeft: "10px", paddingRight: "10px" }}>
+    {children}
+  </Grid>
+);
+
 export const presentForm = (
   inputArray: inputType[],
   formstate: any,
   setFormstate: any,
   errorState: any,
-  message: any
+  message: any,
+  type: string = "box"
 ) => {
+  let Wrapper = type === "box" ? BoxWrapper : GridWrapper;
+
   let comp = inputArray.map((el: inputType, idx: number) => {
     switch (el.type) {
       case "text":
       case "email":
       case "password":
+      case "date":
+      case "number":
         return (
-          <Box key={`${idx}C`}>
+          <Wrapper key={`${idx}C`}>
             <Typography style={{ fontWeight: "bold", fontSize: "0.8em" }}>
-              {el.name.toUpperCase()}
+              {el?.placeholder?.toUpperCase()}
             </Typography>
             <TextField
               type={el.type}
@@ -92,7 +107,10 @@ export const presentForm = (
                 borderColor: errorState[el.name] && "red",
                 marginTop: "1px",
               }}
-              inputProps={{ sx: { paddingTop: "12px", paddingBottom: "12px" } }}
+              inputProps={{
+                step: el.type === "number" && "2",
+                sx: { paddingTop: "12px", paddingBottom: "12px" },
+              }}
               autoComplete="off"
               // autoFocus={idx === 0}
               value={formstate[el.name]}
@@ -108,14 +126,16 @@ export const presentForm = (
                 {message[el.name]}
               </FormHelperText>
             )}
-          </Box>
+          </Wrapper>
         );
       case "select":
         return (
-          <Box key={`${idx}C`}>
-            <FormControl sx={{ mt: 1, width: "100%" }}>
+          <Wrapper key={`${idx}C`}>
+            <FormControl
+              sx={{ mt: type === "box" ? 1 : undefined, width: "100%" }}
+            >
               <Typography style={{ fontWeight: "bold", fontSize: "0.8em" }}>
-                {el.name.toUpperCase()}
+                {el?.placeholder?.toUpperCase()}
               </Typography>
               {/* <InputLabel htmlFor={el.name}>{el.placeholder}</InputLabel> */}
               <Select
@@ -148,7 +168,7 @@ export const presentForm = (
                 </FormHelperText>
               )}
             </FormControl>
-          </Box>
+          </Wrapper>
         );
     }
   });

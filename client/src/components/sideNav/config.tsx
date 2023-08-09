@@ -10,7 +10,7 @@ import { SvgIcon } from "@mui/material";
 
 export const items = [
   {
-    title: "Overview",
+    title: "Dashboard",
     path: "/",
     icon: (
       <SvgIcon fontSize="small">
@@ -19,8 +19,12 @@ export const items = [
     ),
   },
   {
-    title: "Customers",
-    path: "/customers",
+    title: "Administration",
+    type: "parent",
+  },
+  {
+    title: "Funding",
+    path: "/funding",
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -28,8 +32,12 @@ export const items = [
     ),
   },
   {
-    title: "Companies",
-    path: "/companies",
+    title: "Investment",
+    type: "parent",
+  },
+  {
+    title: "Investment Booking",
+    path: "/investments/booking",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
@@ -37,47 +45,11 @@ export const items = [
     ),
   },
   {
-    title: "Account",
-    path: "/account",
+    title: "Investment History",
+    path: "/",
     icon: (
       <SvgIcon fontSize="small">
-        <UserIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Settings",
-    path: "/settings",
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Login",
-    path: "/auth/login",
-    icon: (
-      <SvgIcon fontSize="small">
-        <LockClosedIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Register",
-    path: "/auth/register",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserPlusIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Error",
-    path: "/404",
-    icon: (
-      <SvgIcon fontSize="small">
-        <XCircleIcon />
+        <ShoppingBagIcon />
       </SvgIcon>
     ),
   },
