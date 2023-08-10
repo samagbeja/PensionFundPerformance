@@ -22,4 +22,14 @@ export class PensionFundsService {
       return presentMessage(res, 500, null, "Unexpected Server Error" + err);
     }
   }
+
+  async fetchAll(res: Response) {
+    try {
+      let records: any = await PensionFunds.findAll();
+
+      return presentMessage(res, 201, records, "Record Created");
+    } catch (err) {
+      return presentMessage(res, 500, null, "Unexpected Server Error" + err);
+    }
+  }
 }

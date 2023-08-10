@@ -18,6 +18,7 @@ export interface inputType {
   outputName?: string;
   placeholder?: string;
   options?: any[];
+  optionMode?: string;
 }
 interface outputType {
   [key: string]: boolean | string;
@@ -147,12 +148,16 @@ export const presentForm = (
                   sx: { paddingTop: "12px", paddingBottom: "12px" },
                 }}
               >
-                {el.options &&
-                  el.options.map((item: string, nidx: number) => (
-                    <MenuItem key={`${nidx}U`} value={item}>
-                      {item}
-                    </MenuItem>
-                  ))}
+                {el.options instanceof Array &&
+                  el.options.map((item: any, nidx: number) => {
+                    let label = typeof item === "string" ? item : item?.label;
+                    let value = typeof item === "string" ? item : item?.value;
+                    return (
+                      <MenuItem key={`${nidx}U`} value={value}>
+                        {label}
+                      </MenuItem>
+                    );
+                  })}
               </Select>
               {errorState[el.name] && message[el.name] && (
                 <FormHelperText

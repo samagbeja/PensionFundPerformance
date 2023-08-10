@@ -10,6 +10,7 @@ import { PensionFundsService } from "../services/pensionFund.service";
 
 const pensionFundRouter = (app: Express) => {
   const pensionFundService = new PensionFundsService();
+
   app.post("/fund", (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
     if (
@@ -25,6 +26,15 @@ const pensionFundRouter = (app: Express) => {
       ///service
 
       return pensionFundService.add(res, req.body);
+    }
+    return;
+  });
+
+  app.get("/fund", (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return pensionFundService.fetchAll(res);
     }
     return;
   });

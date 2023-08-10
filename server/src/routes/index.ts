@@ -3,6 +3,7 @@ import profileRouter from "./profile.router";
 import testRouter from "./test.router";
 import userRouter from "./user.router";
 import pensionFundRouter from "./pensionFund.router";
+import investmentRouter from "./investment.router";
 
 const myRoutes = (app: Express) => ({
   // can add middleware here
@@ -10,6 +11,7 @@ const myRoutes = (app: Express) => ({
   userRouter: userRouter(app),
   testRouter: testRouter(app),
   pensionFundRouter: pensionFundRouter(app),
+  investmentRouter: investmentRouter(app),
 });
 //
 

@@ -26,6 +26,8 @@ const isValidDate = (dateString: any) => {
 };
 
 const isValidNumber = (numberString: any) => {
+  if (typeof numberString === "number") return true;
+
   // Check if the input is a non-empty string
   if (typeof numberString !== "string" || numberString.trim() === "") {
     return false;
