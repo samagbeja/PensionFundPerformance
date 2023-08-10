@@ -39,4 +39,12 @@ PensionFunds.init(
   }
 );
 
+export interface pensionFundInput {
+  fundName: string;
+  fundType: string;
+  fundAssets: number;
+  fundStartDate: Date;
+  status: string;
+}
+
 export default PensionFunds;

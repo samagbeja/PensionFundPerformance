@@ -1,19 +1,12 @@
 "use client";
-import { inputType, presentForm } from "@/utils/formValidation";
-import { useState } from "react";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { inputType, validateForm } from "@/utils/formValidation";
+import { useState, FormEvent } from "react";
+
 import type { NextPage } from "next";
 import type { Metadata } from "next";
+import Form from "@/components/form";
+import api from "@/utils/api";
+import { useSnackbar } from "notistack";
 
 export const metadata: Metadata = {
   title: "Pension-Funding",
@@ -21,8 +14,10 @@ export const metadata: Metadata = {
 };
 
 const Funding: NextPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
+  const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
   const inputArray: inputType[] = [
     {
@@ -36,6 +31,7 @@ const Funding: NextPage = () => {
       type: "select",
       outputName: "Fund Type",
       placeholder: "Fund Type",
+      options: ["Raising", "Trust"],
     },
 
     {
@@ -55,61 +51,49 @@ const Funding: NextPage = () => {
       type: "select",
       outputName: "Status",
       placeholder: "Status",
+      options: ["Active"],
     },
   ];
-  const handleSubmit = () => {};
+  const handleSubmit = async (e: FormEvent<any>) => {
+    try {
+      e.preventDefault();
+      let status = validateForm(inputArray, formstate, setError, setMessageObj);
+      console.log(status);
+      console.log(formstate);
+      if (status) {
+        // sign up
+
+        const res: any = await api.post("fund", formstate);
+        console.log(res, "res");
+        enqueueSnackbar(res?.data?.message, {
+          variant: "success",
+        });
+        setFormstate({});
+        setError({});
+        setKeyIndex(Math.random());
+        // dispatch(loginUser(res?.data?.payload));
+        // router.push("/");
+      }
+    } catch (err: any) {
+      console.log("err", err);
+      enqueueSnackbar(err?.response?.data?.message, {
+        variant: "error",
+      });
+    }
+  };
 
   return (
     <>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="xl">
-          <Grid container spacing={3} style={{ gap: "20px" }}>
-            <Grid xs={12}>
-              <Card style={{ marginLeft: "10px", borderRadius: "5px" }}>
-                <CardContent style={{ padding: "10px" }}>Funding</CardContent>
-              </Card>
-            </Grid>
-            <Grid xs={12}>
-              <Card style={{ marginLeft: "10px", borderRadius: "5px" }}>
-                <CardContent>
-                  <Grid
-                    container
-                    spacing={2}
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1, p: 4, pl: 5 }}
-                  >
-                    {presentForm(
-                      inputArray,
-                      formstate,
-                      setFormstate,
-                      error,
-                      messageObj,
-                      "grid"
-                    )}
-
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Submit
-                    </Button>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+      <Form
+        keyIndex={keyIndex}
+        inputArray={inputArray}
+        formstate={formstate}
+        setFormstate={setFormstate}
+        error={error}
+        messageObj={messageObj}
+        handleSubmit={handleSubmit}
+        title="Funding"
+      />
     </>
   );
 };

@@ -3,7 +3,7 @@ import Users, { signInInput, userInput } from "../schema/users.schema";
 import { presentMessage } from "../utils/validate";
 import { Response } from "express";
 import { signJwt } from "../utils/jwt";
-
+import { serialize } from "cookie";
 export class UserService {
   async signup(res: Response, input: userInput) {
     try {
@@ -29,10 +29,14 @@ export class UserService {
         newUser.password = undefined;
         const token: string = signJwt(newUser);
 
-        res.cookie("accessToken", token, {
-          httpOnly: true,
-          secure: true,
-        });
+        // res.cookie("accessToken", token, {
+        //   httpOnly: true,
+        //   secure: true,
+        // });
+        // const cookieOptions = { maxAge: 3.15e10 };
+        // const cookieValue = serialize("accessToken", token, cookieOptions);
+        // res.setHeader("Set-Cookie", cookieValue);
+        newUser.token = token;
 
         return presentMessage(res, 201, newUser, "User Created");
       }
@@ -60,10 +64,11 @@ export class UserService {
           existingUser.password = undefined;
           const token: string = signJwt(existingUser);
 
-          res.cookie("accessToken", token, {
-            httpOnly: true,
-            secure: true,
-          });
+          existingUser.token = token;
+          // const cookieOptions = { maxAge: 3.15e10 };
+          // const cookieValue = serialize("accessToken", token, cookieOptions);
+          // res.setHeader("Set-Cookie", cookieValue);
+          // res.cookie("accessToken", token);
           return presentMessage(res, 200, existingUser, "Sign in successfully");
         } else {
           return presentMessage(res, 400, null, "Invalid username or password");

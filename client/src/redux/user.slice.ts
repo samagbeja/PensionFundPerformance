@@ -6,6 +6,7 @@ interface UserState {
   email: string;
   userType: string;
   userId?: number;
+  token?: string;
 }
 
 const initialState: UserState = {
@@ -13,6 +14,7 @@ const initialState: UserState = {
   email: "",
   userType: "",
   userId: undefined,
+  token: undefined,
 };
 
 const userSlice = createSlice({
@@ -24,12 +26,17 @@ const userSlice = createSlice({
       state.username = action.payload?.username;
       state.userId = action.payload?.userId;
       state.userType = action.payload?.userType;
+      // state.token = action.payload?.token;
+      if (action.payload?.token)
+        localStorage.setItem("token", action.payload?.token);
     },
     logoutUser(state) {
       state.username = "";
       state.email = "";
       state.userType = "";
       state.userId = undefined;
+      // state.token = undefined;
+      localStorage.removeItem("token");
     },
   },
 });

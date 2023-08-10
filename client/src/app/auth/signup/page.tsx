@@ -76,7 +76,9 @@ const Signup: NextPage = () => {
         enqueueSnackbar(res?.data?.message, {
           variant: "success",
         });
-        dispatch(loginUser(res?.data?.payload));
+        const { username, userId, userType, email, token } = res?.data?.payload;
+        dispatch(loginUser({ username, userId, userType, email, token }));
+
         router.push("/");
       }
     } catch (err: any) {
