@@ -1,12 +1,15 @@
 "use client";
 import { inputType, validateForm } from "@/utils/formValidation";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 
 import type { NextPage } from "next";
 import type { Metadata } from "next";
 import Form from "@/components/form";
 import api from "@/utils/api";
 import { useSnackbar } from "notistack";
+
+import FullTable from "@/components/FullTable";
+import { subDays, subHours } from "date-fns";
 
 export const metadata: Metadata = {
   title: "Pension-Funding",
@@ -19,6 +22,16 @@ const Funding: NextPage = () => {
   const [error, setError] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
+
+  const [fundData, setFundData] = useState([] as any);
+
+  const tableHeaders = [
+    { id: "fundName", title: "Fund Name" },
+    { id: "fundType", title: "Fund Type" },
+    { id: "fundStartDate", title: "Start Date" },
+    { id: "status", title: "Status" },
+  ];
+
   const inputArray: inputType[] = [
     {
       name: "fundName",
@@ -51,15 +64,18 @@ const Funding: NextPage = () => {
       type: "select",
       outputName: "Status",
       placeholder: "Status",
-      options: ["Active"],
+      options: ["Active", "Inactive"],
     },
   ];
+
+  console.log(formstate, "formstate");
+
   const handleSubmit = async (e: FormEvent<any>) => {
     try {
       e.preventDefault();
+
       let status = validateForm(inputArray, formstate, setError, setMessageObj);
       console.log(status);
-      console.log(formstate);
       if (status) {
         // sign up
 
@@ -71,6 +87,7 @@ const Funding: NextPage = () => {
         setFormstate({});
         setError({});
         setKeyIndex(Math.random());
+        await getFundData();
         // dispatch(loginUser(res?.data?.payload));
         // router.push("/");
       }
@@ -82,17 +99,46 @@ const Funding: NextPage = () => {
     }
   };
 
+  const getFundData = async () => {
+    try {
+      const res: any = await api.get("fund");
+      if (res?.data?.payload instanceof Array) {
+        let data = res?.data?.payload.map((el: any) => {
+          el.fundStartDate = new Date(el.fundStartDate).toLocaleDateString(
+            "en-GB"
+          );
+          return el;
+        });
+        setFundData(data);
+      } else {
+        setFundData([]);
+      }
+    } catch {
+      setFundData([]);
+    }
+  };
+
+  useEffect(() => {
+    getFundData();
+  }, []);
+
   return (
     <>
-      <Form
-        keyIndex={keyIndex}
+      <FullTable
+        title="Fund List"
+        tableHeaders={tableHeaders}
+        data={fundData}
         inputArray={inputArray}
+        submitForm={handleSubmit}
         formstate={formstate}
         setFormstate={setFormstate}
         error={error}
+        setError={setError}
+        setMessageObj={setMessageObj}
+        setKeyIndex={setKeyIndex}
         messageObj={messageObj}
+        keyIndex={keyIndex}
         handleSubmit={handleSubmit}
-        title="Funding"
       />
     </>
   );

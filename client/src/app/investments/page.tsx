@@ -1,44 +1,37 @@
 "use client";
 import { inputType, validateForm } from "@/utils/formValidation";
-import { useState, useEffect, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 
 import type { NextPage } from "next";
 import type { Metadata } from "next";
-import api from "@/utils/api";
 import Form from "@/components/form";
+import api from "@/utils/api";
 import { useSnackbar } from "notistack";
 
+import FullTable from "@/components/FullTable";
+import { subDays, subHours } from "date-fns";
+
 export const metadata: Metadata = {
-  title: "Pension-Booking",
+  title: "Pension-Funding",
   description: "Pension Systems",
 };
 
-const Booking: NextPage = () => {
+const Funding: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
-  const [messageObj, setMessageObj] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
+  const [messageObj, setMessageObj] = useState({} as any);
+
   const [fundData, setFundData] = useState([] as any);
 
-  const getFundData = async () => {
-    try {
-      const res: any = await api.get("fund");
-      if (res?.data?.payload instanceof Array) {
-        let data = res?.data?.payload.map((el: any) => ({
-          value: el.fundId,
-          label: el.fundName,
-        }));
-        setFundData(data);
-      }
-    } catch {
-      return setFundData([]);
-    }
-  };
+  const tableHeaders = [
+    { id: "fundName", title: "Fund Name" },
+    { id: "fundType", title: "Fund Type" },
+    { id: "fundStartDate", title: "Start Date" },
+    { id: "status", title: "Status" },
+  ];
 
-  useEffect(() => {
-    getFundData();
-  }, []);
   const inputArray: inputType[] = [
     {
       name: "fundId",
@@ -89,6 +82,9 @@ const Booking: NextPage = () => {
       placeholder: "End Date",
     },
   ];
+
+  console.log(formstate, "formstate");
+
   const handleSubmit = async (e: FormEvent<any>) => {
     try {
       e.preventDefault();
@@ -117,20 +113,45 @@ const Booking: NextPage = () => {
     }
   };
 
+  const getFundData = async () => {
+    try {
+      const res: any = await api.get("fund");
+      if (res?.data?.payload instanceof Array) {
+        let data = res?.data?.payload.map((el: any) => ({
+          value: el.fundId,
+          label: el.fundName,
+        }));
+        setFundData(data);
+      }
+    } catch {
+      return setFundData([]);
+    }
+  };
+
+  useEffect(() => {
+    getFundData();
+  }, []);
+
   return (
     <>
-      <Form
+      <FullTable
+        title="Investments"
+        tableHeaders={tableHeaders}
+        data={fundData}
         inputArray={inputArray}
+        submitForm={handleSubmit}
         formstate={formstate}
         setFormstate={setFormstate}
         error={error}
+        setError={setError}
+        setMessageObj={setMessageObj}
+        setKeyIndex={setKeyIndex}
         messageObj={messageObj}
-        handleSubmit={handleSubmit}
-        title="Funding"
         keyIndex={keyIndex}
+        handleSubmit={handleSubmit}
       />
     </>
   );
 };
 
-export default Booking;
+export default Funding;

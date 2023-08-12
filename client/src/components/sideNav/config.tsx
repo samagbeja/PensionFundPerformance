@@ -23,8 +23,8 @@ export const items = [
     type: "parent",
   },
   {
-    title: "Funding",
-    path: "/funding",
+    title: "Fund List",
+    path: "/fundlist",
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
@@ -36,8 +36,8 @@ export const items = [
     type: "parent",
   },
   {
-    title: "Investment Booking",
-    path: "/investments/booking",
+    title: "Investment List",
+    path: "/investments",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
