@@ -58,14 +58,19 @@ const Investment: NextPage = () => {
       type: "select",
       outputName: "Investment Type",
       placeholder: "Investment Type",
-      options: ["Full"],
+      options: [
+        "Stocks",
+        "Bonds",
+        "Real Estate",
+        "Fixed Deposit",
+        "Discounted Instrument",
+      ],
     },
     {
       name: "investmentSector",
-      type: "select",
+      type: "text",
       outputName: "Investment Sector",
       placeholder: "Investment Sector",
-      options: ["Industry"],
     },
     {
       name: "investmentAmount",
