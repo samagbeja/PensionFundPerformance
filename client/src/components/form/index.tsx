@@ -19,6 +19,7 @@ export default ({
   keyIndex,
   title,
   handleClose,
+  edt,
 }: any) => {
   console.log(keyIndex, "keyIndex");
   return (
@@ -84,7 +85,7 @@ export default ({
                       variant="contained"
                       sx={{ mt: 3, mb: 2 }}
                     >
-                      Submit
+                      {edt ? "Update" : "Submit"}
                     </Button>
                   </Grid>
                 </CardContent>

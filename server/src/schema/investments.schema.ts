@@ -53,6 +53,7 @@ Investments.init(
 
 export interface investmentInput {
   fundId: number;
+  investmentId?: number;
   investmentName: string;
   investmentType: string;
   investmentSector: string;

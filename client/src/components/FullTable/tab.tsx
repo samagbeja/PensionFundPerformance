@@ -7,6 +7,7 @@ import {
   Card,
   Checkbox,
   Stack,
+  SvgIcon,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +18,8 @@ import {
 } from "@mui/material";
 import { Scrollbar } from "../scrollbar";
 import _default from "@mui/material/styles/identifier";
+import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
+import PencilIcon from "@heroicons/react/24/solid/PencilSquareIcon";
 
 export default (props: any) => {
   const {
@@ -27,6 +30,8 @@ export default (props: any) => {
     onRowsPerPageChange,
     page = 0,
     rowsPerPage = 0,
+    handleEdit,
+    handleDelete,
   } = props;
 
   console.log(items, "items");
@@ -41,6 +46,7 @@ export default (props: any) => {
               {tableHeaders.map((item: any, index: number) => (
                 <TableCell key={`H${index}`}>{item?.title}</TableCell>
               ))}
+              {tableHeaders.length && <TableCell>Actions</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -50,6 +56,30 @@ export default (props: any) => {
                   {tableHeaders.map((citem: any, idx: number) => (
                     <TableCell key={`HC${idx}`}>{item[citem?.id]}</TableCell>
                   ))}
+                  {tableHeaders.length && (
+                    <TableCell
+                      style={{ display: "flex", justifyContent: "flex-start" }}
+                    >
+                      <span
+                        onClick={() => handleEdit(item)}
+                        title="Edit"
+                        style={{ marginRight: 10, cursor: "pointer" }}
+                      >
+                        <SvgIcon fontSize="small" color="primary">
+                          <PencilIcon />
+                        </SvgIcon>
+                      </span>
+                      <span
+                        onClick={() => handleDelete(item)}
+                        style={{ cursor: "pointer" }}
+                        title="Delete"
+                      >
+                        <SvgIcon fontSize="small" color="error">
+                          <TrashIcon />
+                        </SvgIcon>
+                      </span>
+                    </TableCell>
+                  )}
                 </TableRow>
               );
             })}

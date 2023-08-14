@@ -9,6 +9,7 @@ import api from "@/utils/api";
 import { useSnackbar } from "notistack";
 
 import FullTable from "@/components/FullTable";
+import { handleDelete, handleEdit, handleSubmit } from "@/utils/formAction";
 import { subDays, subHours } from "date-fns";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description: "Pension Systems",
 };
 
-const Funding: NextPage = () => {
+const Investment: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
@@ -24,15 +25,25 @@ const Funding: NextPage = () => {
   const [messageObj, setMessageObj] = useState({} as any);
 
   const [fundData, setFundData] = useState([] as any);
+  const [investmentData, setInvestmentData] = useState([] as any);
 
   const tableHeaders = [
+    { id: "investmentName", title: "Name" },
     { id: "fundName", title: "Fund Name" },
-    { id: "fundType", title: "Fund Type" },
-    { id: "fundStartDate", title: "Start Date" },
-    { id: "status", title: "Status" },
+    { id: "investmentType", title: "Type" },
+    { id: "investmentSector", title: "Sector" },
+    { id: "investmentAmount", title: "Amount" },
+    { id: "startDate", title: "Start Date" },
+    { id: "endDate", title: "End Date" },
   ];
 
   const inputArray: inputType[] = [
+    {
+      name: "investmentName",
+      type: "text",
+      outputName: "Investment Name",
+      placeholder: "Investment Name",
+    },
     {
       name: "fundId",
       type: "select",
@@ -40,12 +51,6 @@ const Funding: NextPage = () => {
       placeholder: "Fund Name",
       options: fundData,
       optionMode: "labelValue",
-    },
-    {
-      name: "investmentName",
-      type: "text",
-      outputName: "Investment Name",
-      placeholder: "Investment Name",
     },
 
     {
@@ -84,34 +89,46 @@ const Funding: NextPage = () => {
   ];
 
   console.log(formstate, "formstate");
+  const url = "investment";
+  const handleSubmitForm = async (e: FormEvent<any>) =>
+    handleSubmit(
+      e,
+      enqueueSnackbar,
+      url,
+      inputArray,
+      formstate,
+      setError,
+      setKeyIndex,
+      setFormstate,
+      setMessageObj,
+      getInvestMents
+    );
 
-  const handleSubmit = async (e: FormEvent<any>) => {
-    try {
-      e.preventDefault();
-      let status = validateForm(inputArray, formstate, setError, setMessageObj);
-      console.log(status);
-      console.log(formstate);
-      if (status) {
-        // sign up
+  const handleEditForm = async (e: FormEvent<any>) =>
+    handleEdit(
+      e,
+      enqueueSnackbar,
+      url,
+      inputArray,
+      formstate,
+      setError,
+      setKeyIndex,
+      setFormstate,
+      setMessageObj,
+      getInvestMents
+    );
 
-        const res: any = await api.post("investment", formstate);
-        console.log(res, "res");
-        enqueueSnackbar(res?.data?.message, {
-          variant: "success",
-        });
-        setFormstate({});
-        setError({});
-        setKeyIndex(Math.random());
-        // dispatch(loginUser(res?.data?.payload));
-        // router.push("/");
-      }
-    } catch (err: any) {
-      console.log("err", err);
-      enqueueSnackbar(err?.response?.data?.message, {
-        variant: "error",
-      });
-    }
-  };
+  const handleDeleteForm = async () =>
+    handleDelete(
+      url,
+      formstate,
+      enqueueSnackbar,
+      setFormstate,
+      setError,
+      setKeyIndex,
+      formstate.fundId,
+      getInvestMents
+    );
 
   const getFundData = async () => {
     try {
@@ -128,18 +145,47 @@ const Funding: NextPage = () => {
     }
   };
 
+  const getInvestMents = async () => {
+    try {
+      const res: any = await api.get(url);
+      if (res?.data?.payload instanceof Array) {
+        let data = res?.data?.payload.map((el: any) => {
+          el.startDate = new Date(el.investmentStartDate).toLocaleDateString(
+            "en-GB"
+          );
+          el.endDate = new Date(el.investmentEndDate).toLocaleDateString(
+            "en-GB"
+          );
+          el.investmentStartDate = String(el.investmentStartDate).split("T")[0];
+          el.investmentEndDate = String(el.investmentEndDate).split("T")[0];
+
+          return el;
+        });
+        setInvestmentData(data);
+      } else {
+        setInvestmentData([]);
+      }
+    } catch {
+      setInvestmentData([]);
+    }
+  };
+
+  const getData = async () => {
+    await getInvestMents();
+    await getFundData();
+  };
+
   useEffect(() => {
-    getFundData();
+    getData();
   }, []);
 
   return (
     <>
       <FullTable
-        title="Investments"
+        title="Investment List"
         tableHeaders={tableHeaders}
-        data={fundData}
+        data={investmentData}
         inputArray={inputArray}
-        submitForm={handleSubmit}
         formstate={formstate}
         setFormstate={setFormstate}
         error={error}
@@ -148,10 +194,12 @@ const Funding: NextPage = () => {
         setKeyIndex={setKeyIndex}
         messageObj={messageObj}
         keyIndex={keyIndex}
-        handleSubmit={handleSubmit}
+        handleEditForm={handleEditForm}
+        handleDeleteForm={handleDeleteForm}
+        handleSubmit={handleSubmitForm}
       />
     </>
   );
 };
 
-export default Funding;
+export default Investment;

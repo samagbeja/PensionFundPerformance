@@ -44,13 +44,4 @@ export const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Investment History",
-    path: "/",
-    icon: (
-      <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
-      </SvgIcon>
-    ),
-  },
 ];

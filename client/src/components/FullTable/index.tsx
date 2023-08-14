@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState, FormEvent } from "react";
+"use client";
+import { useCallback, useMemo, useState, FormEvent, useEffect } from "react";
 import Head from "next/head";
 import { subDays, subHours } from "date-fns";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
@@ -7,6 +8,8 @@ import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import {
   Box,
   Button,
+  Card,
+  CardContent,
   Container,
   Stack,
   SvgIcon,
@@ -34,6 +37,8 @@ const FullTable = ({
   messageObj,
   keyIndex,
   handleSubmit,
+  handleEditForm,
+  handleDeleteForm,
 }: any) => {
   console.log(data, "itemdata");
 
@@ -57,8 +62,55 @@ const FullTable = ({
       : [];
   };
 
+  const handleEdit = (item: any) => {
+    setFormType(2);
+    setOpen(true);
+
+    setFormstate(item);
+  };
+
+  const handleDelete = (item: any) => {
+    setFormType(3);
+    setOpen(true);
+    setFormstate(item);
+  };
+
   const BodyTag = () => {
     switch (formType) {
+      case 2:
+        return (
+          <Form
+            keyIndex={keyIndex}
+            inputArray={inputArray}
+            formstate={formstate}
+            setFormstate={setFormstate}
+            error={error}
+            messageObj={messageObj}
+            handleSubmit={handleEditForm}
+            title={`Edit ${title} record of ${formstate[tableHeaders[0]?.id]}`}
+            handleClose={handleClose}
+            edt
+          />
+        );
+      case 3:
+        return (
+          <Box
+            component="main"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <Card style={{ marginLeft: "10px", borderRadius: "5px" }}>
+              <CardContent>
+                Do you want to delete {formstate[tableHeaders[0]?.id]}
+                <Box
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Button onClick={() => handleDeleteForm()}>Yes</Button>
+                  <Button onClick={() => setOpen(false)}>No</Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Box>
+        );
       default:
         return (
           <Form
@@ -69,12 +121,16 @@ const FullTable = ({
             error={error}
             messageObj={messageObj}
             handleSubmit={handleSubmit}
-            title={title}
+            title={`Add to ${title}`}
             handleClose={handleClose}
           />
         );
     }
   };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [keyIndex]);
 
   return (
     <>
@@ -123,6 +179,8 @@ const FullTable = ({
                   variant="contained"
                   onClick={() => {
                     setFormType(1);
+                    setFormstate({});
+                    setError({});
                     setOpen(true);
                   }}
                 >
@@ -130,7 +188,7 @@ const FullTable = ({
                 </Button>
               </div>
             </Stack>
-            <Search title={title} />
+            {/* <Search title={title} /> */}
             <Table
               count={data.length}
               items={applyPagination()}
@@ -139,6 +197,8 @@ const FullTable = ({
               page={page}
               rowsPerPage={rowsPerPage}
               tableHeaders={tableHeaders}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
             />
           </Stack>
         </Container>

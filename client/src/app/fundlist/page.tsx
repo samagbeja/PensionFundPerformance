@@ -9,6 +9,7 @@ import api from "@/utils/api";
 import { useSnackbar } from "notistack";
 
 import FullTable from "@/components/FullTable";
+import { handleDelete, handleEdit, handleSubmit } from "@/utils/formAction";
 import { subDays, subHours } from "date-fns";
 
 export const metadata: Metadata = {
@@ -28,7 +29,8 @@ const Funding: NextPage = () => {
   const tableHeaders = [
     { id: "fundName", title: "Fund Name" },
     { id: "fundType", title: "Fund Type" },
-    { id: "fundStartDate", title: "Start Date" },
+    { id: "fundAssets", title: "Fund Assets" },
+    { id: "startDate", title: "Start Date" },
     { id: "status", title: "Status" },
   ];
 
@@ -44,14 +46,7 @@ const Funding: NextPage = () => {
       type: "select",
       outputName: "Fund Type",
       placeholder: "Fund Type",
-      options: ["Raising", "Trust"],
-    },
-
-    {
-      name: "fundAssets",
-      type: "number",
-      outputName: "Fund Assets",
-      placeholder: "Fund Assets",
+      options: ["Defined benefit", "Defined contribution"],
     },
     {
       name: "fundStartDate",
@@ -70,45 +65,57 @@ const Funding: NextPage = () => {
 
   console.log(formstate, "formstate");
 
-  const handleSubmit = async (e: FormEvent<any>) => {
-    try {
-      e.preventDefault();
+  const handleSubmitForm = async (e: FormEvent<any>) =>
+    handleSubmit(
+      e,
+      enqueueSnackbar,
+      "fund",
+      inputArray,
+      formstate,
+      setError,
+      setKeyIndex,
+      setFormstate,
+      setMessageObj,
+      getFundData
+    );
 
-      let status = validateForm(inputArray, formstate, setError, setMessageObj);
-      console.log(status);
-      if (status) {
-        // sign up
+  const handleEditForm = async (e: FormEvent<any>) =>
+    handleEdit(
+      e,
+      enqueueSnackbar,
+      "fund",
+      inputArray,
+      formstate,
+      setError,
+      setKeyIndex,
+      setFormstate,
+      setMessageObj,
+      getFundData
+    );
 
-        const res: any = await api.post("fund", formstate);
-        console.log(res, "res");
-        enqueueSnackbar(res?.data?.message, {
-          variant: "success",
-        });
-        setFormstate({});
-        setError({});
-        setKeyIndex(Math.random());
-        await getFundData();
-        // dispatch(loginUser(res?.data?.payload));
-        // router.push("/");
-      }
-    } catch (err: any) {
-      console.log("err", err);
-      enqueueSnackbar(err?.response?.data?.message, {
-        variant: "error",
-      });
-    }
-  };
+  const handleDeleteForm = async () =>
+    handleDelete(
+      "fund",
+      formstate,
+      enqueueSnackbar,
+      setFormstate,
+      setError,
+      setKeyIndex,
+      formstate.fundId,
+      getFundData
+    );
 
   const getFundData = async () => {
     try {
       const res: any = await api.get("fund");
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          el.fundStartDate = new Date(el.fundStartDate).toLocaleDateString(
-            "en-GB"
-          );
+          el.startDate = new Date(el.fundStartDate).toLocaleDateString("en-GB");
+          el.fundStartDate = String(el.fundStartDate).split("T")[0];
+
           return el;
         });
+
         setFundData(data);
       } else {
         setFundData([]);
@@ -129,7 +136,6 @@ const Funding: NextPage = () => {
         tableHeaders={tableHeaders}
         data={fundData}
         inputArray={inputArray}
-        submitForm={handleSubmit}
         formstate={formstate}
         setFormstate={setFormstate}
         error={error}
@@ -138,7 +144,9 @@ const Funding: NextPage = () => {
         setKeyIndex={setKeyIndex}
         messageObj={messageObj}
         keyIndex={keyIndex}
-        handleSubmit={handleSubmit}
+        handleEditForm={handleEditForm}
+        handleDeleteForm={handleDeleteForm}
+        handleSubmit={handleSubmitForm}
       />
     </>
   );
