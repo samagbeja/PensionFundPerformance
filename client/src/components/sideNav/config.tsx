@@ -18,10 +18,10 @@ export const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Administration",
-    type: "parent",
-  },
+  // {
+  //   title: "Administration",
+  //   type: "parent",
+  // },
   {
     title: "Fund List",
     path: "/fundlist",
@@ -31,13 +31,22 @@ export const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Investment",
-    type: "parent",
-  },
+  // {
+  //   title: "Investment",
+  //   type: "parent",
+  // },
   {
     title: "Investment List",
     path: "/investments",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Performance Metrics",
+    path: "/performanceMetrics",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />

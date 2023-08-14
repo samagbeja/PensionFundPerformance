@@ -3,11 +3,10 @@ import sequelize from "../utils/sequelize";
 
 import Investments from "./investments.schema";
 
-
 class PerformanceMetrics extends Model {}
 
 PerformanceMetrics.init(
-  { 
+  {
     // Model attributes are defined here
     metricId: {
       type: DataTypes.INTEGER,
@@ -15,34 +14,38 @@ PerformanceMetrics.init(
       primaryKey: true,
     },
     investmentId: {
-       type:  DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       references: {
         model: Investments, // Can be both a string representing the table name or a Sequelize model
-        key: 'investmentId'
-      }
+        key: "investmentId",
+      },
     },
     metricName: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-      },
-      metricValue: {
-        type: DataTypes.DECIMAL(18,4),
-        allowNull: false,
-      },
-      metricDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },    
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    metricValue: {
+      type: DataTypes.DECIMAL(18, 4),
+      allowNull: false,
+    },
+    metricDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
     // Other model options go here
-    sequelize, 
+    sequelize,
     modelName: "PerformanceMetrics",
-   
   }
 );
 
-
-
+export interface performanceMetricsInput {
+  metricId?: number;
+  investmentId: number;
+  metricName: string;
+  metricValue: number;
+  metricDate: Date;
+}
 
 export default PerformanceMetrics;
