@@ -35,6 +35,7 @@ const userRouter = (app: Express) => {
 
   const userService = new UserService();
   app.post("/signup", (req: Request, res: Response) => {
+    console.log(' I am here')
     if (
       establishValidateRequest(req, res, [
         { name: "username", type: "string" },
