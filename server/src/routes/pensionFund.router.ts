@@ -11,6 +11,15 @@ import { PensionFundsService } from "../services/pensionFund.service";
 const pensionFundRouter = (app: Express) => {
   const pensionFundService = new PensionFundsService();
 
+  app.get("/fund", (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return pensionFundService.fetchAll(res);
+    }
+    return;
+  });
+
   app.post("/fund", (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
     if (
@@ -18,7 +27,6 @@ const pensionFundRouter = (app: Express) => {
       establishValidateRequest(req, res, [
         { name: "fundName", type: "string" },
         { name: "fundType", type: "string" },
-        { name: "fundAssets", type: "number" },
         { name: "fundStartDate", type: "date" },
         { name: "status", type: "string" },
       ])
@@ -30,11 +38,32 @@ const pensionFundRouter = (app: Express) => {
     return;
   });
 
-  app.get("/fund", (req: Request, res: Response) => {
+  app.put("/fund", (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
-    if (authorizeRequest) {
-      ///service
-      return pensionFundService.fetchAll(res);
+    if (
+      authorizeRequest &&
+      establishValidateRequest(req, res, [
+        { name: "fundId", type: "number" },
+        { name: "fundName", type: "string" },
+        { name: "fundType", type: "string" },
+        { name: "fundStartDate", type: "date" },
+        { name: "status", type: "string" },
+      ])
+    ) {
+      return pensionFundService.update(res, req.body);
+    }
+    return;
+  });
+
+  app.delete("/fund", (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+
+    req.body.id = req.query.id;
+    if (
+      authorizeRequest &&
+      establishValidateRequest(req, res, [{ name: "id", type: "number" }])
+    ) {
+      return pensionFundService.delete(res, req.body.id);
     }
     return;
   });

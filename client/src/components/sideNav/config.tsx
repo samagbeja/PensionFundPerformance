@@ -18,26 +18,26 @@ export const items = [
       </SvgIcon>
     ),
   },
+  // {
+  //   title: "Administration",
+  //   type: "parent",
+  // },
   {
-    title: "Administration",
-    type: "parent",
-  },
-  {
-    title: "Funding",
-    path: "/funding",
+    title: "Fund List",
+    path: "/fundlist",
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
       </SvgIcon>
     ),
   },
+  // {
+  //   title: "Investment",
+  //   type: "parent",
+  // },
   {
-    title: "Investment",
-    type: "parent",
-  },
-  {
-    title: "Investment Booking",
-    path: "/investments/booking",
+    title: "Investment List",
+    path: "/investments",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
@@ -45,8 +45,8 @@ export const items = [
     ),
   },
   {
-    title: "Investment History",
-    path: "/",
+    title: "Performance Metrics",
+    path: "/performanceMetrics",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />

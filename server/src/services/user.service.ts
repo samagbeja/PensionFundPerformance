@@ -3,7 +3,7 @@ import Users, { signInInput, userInput } from "../schema/users.schema";
 import { presentMessage } from "../utils/validate";
 import { Response } from "express";
 import { signJwt } from "../utils/jwt";
-import { serialize } from "cookie";
+
 export class UserService {
   async signup(res: Response, input: userInput) {
     try {

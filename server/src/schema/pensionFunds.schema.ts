@@ -19,10 +19,7 @@ PensionFunds.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    fundAssets: {
-      type: DataTypes.DECIMAL(18, 2),
-      allowNull: false,
-    },
+
     fundStartDate: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -41,8 +38,9 @@ PensionFunds.init(
 
 export interface pensionFundInput {
   fundName: string;
+  fundId: number;
   fundType: string;
-  fundAssets: number;
+  fundAssets?: number;
   fundStartDate: Date;
   status: string;
 }

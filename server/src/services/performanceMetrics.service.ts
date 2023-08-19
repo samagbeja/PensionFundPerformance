@@ -1,62 +1,66 @@
 import { presentMessage } from "../utils/validate";
 import { Response } from "express";
 
-import PensionFunds, { pensionFundInput } from "../schema/pensionFunds.schema";
 import Investments from "../schema/investments.schema";
 
-export class PensionFundsService {
+import PerformanceMetrics, {
+  performanceMetricsInput,
+} from "../schema/performanceMetrics";
+
+export class PerformanceMetricsService {
   async fetchAll(res: Response) {
     try {
-      let records: any = await PensionFunds.findAll();
-
-      //add fund Assets
+      let records: any = await PerformanceMetrics.findAll();
       let arrRecord = [];
       for (let record of records) {
-        let invRecord: number = await Investments.sum("investmentAmount", {
-          where: { fundId: record.fundId },
+        let findRecord: any = await Investments.findOne({
+          where: { investmentId: record.investmentId },
         });
-
-        console.log(invRecord, "investmentAmount");
         record = record.get();
         arrRecord.push({
           ...record,
-          fundAssets: invRecord,
+          investmentName: findRecord.investmentName,
         });
       }
-
       return presentMessage(res, 200, arrRecord, "Record Fetched");
     } catch (err) {
       return presentMessage(res, 500, null, "Unexpected Server Error" + err);
     }
   }
 
-  async add(res: Response, input: pensionFundInput) {
+  async add(res: Response, input: performanceMetricsInput) {
     try {
-      const { fundName, fundType, fundStartDate, status } = input;
+      const { investmentId, metricName, metricValue, metricDate } = input;
 
-      await PensionFunds.create({
-        fundName,
-        fundType,
-        fundStartDate,
-        status,
+      let newRecord: any = await PerformanceMetrics.create({
+        investmentId,
+        metricName,
+        metricValue,
+        metricDate,
       });
-      // newRecord = newRecord.get();
+      newRecord = newRecord.get();
 
-      return presentMessage(res, 201, null, "Record Created");
+      return presentMessage(res, 201, newRecord, "Record Created");
     } catch (err) {
       return presentMessage(res, 500, null, "Unexpected Server Error" + err);
     }
   }
 
-  async update(res: Response, input: pensionFundInput) {
+  async update(res: Response, input: performanceMetricsInput) {
     try {
-      const { fundName, fundType, fundStartDate, status, fundId } = input;
+      const { investmentId, metricName, metricValue, metricDate, metricId } =
+        input;
 
-      await PensionFunds.update(
-        { fundName, fundType, fundStartDate, status },
+      await PerformanceMetrics.update(
+        {
+          investmentId,
+          metricName,
+          metricValue,
+          metricDate,
+        },
         {
           where: {
-            fundId,
+            metricId,
           },
         }
       );
@@ -69,9 +73,9 @@ export class PensionFundsService {
 
   async delete(res: Response, id: string | number) {
     try {
-      await PensionFunds.destroy({
+      await PerformanceMetrics.destroy({
         where: {
-          fundId: id,
+          metricId: id,
         },
       });
 
