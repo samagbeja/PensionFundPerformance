@@ -1,8 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../utils/sequelize";
 
-
-
 class Reports extends Model {}
 
 Reports.init(
@@ -13,28 +11,32 @@ Reports.init(
       autoIncrement: true,
       primaryKey: true,
     },
-   
+
     reportType: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     reportDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
+      type: DataTypes.DATE,
+      allowNull: false,
     },
     reportFilePath: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    
   },
   {
     // Other model options go here
-    sequelize, 
+    sequelize,
     modelName: "Reports",
-   
   }
 );
 
+export interface ReportsInput {
+  reportId?: number;
+  reportType: string;
+  reportDate: Date;
+  reportFilePath: string;
+}
 
 export default Reports;

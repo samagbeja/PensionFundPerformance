@@ -53,4 +53,13 @@ export const items = [
       </SvgIcon>
     ),
   },
+  {
+    title: "Risk Metrics",
+    path: "/riskMetrics",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
 ];

@@ -1,8 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../utils/sequelize";
 
-
-
 class CommunicationChannels extends Model {}
 
 CommunicationChannels.init(
@@ -13,25 +11,27 @@ CommunicationChannels.init(
       autoIncrement: true,
       primaryKey: true,
     },
-   
+
     channelName: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     channelType: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
-    
-    
   },
   {
     // Other model options go here
-    sequelize, 
+    sequelize,
     modelName: "CommunicationChannels",
-   
   }
 );
 
+export interface CommunicationChannelsInput {
+  channelId?: number;
+  channelName: string;
+  channelType: string;
+}
 
 export default CommunicationChannels;

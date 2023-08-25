@@ -3,8 +3,6 @@ import sequelize from "../utils/sequelize";
 import Reports from "./reports.schema";
 import Users from "./users.schema";
 
-
-
 class ReportAccess extends Model {}
 
 ReportAccess.init(
@@ -15,35 +13,38 @@ ReportAccess.init(
       autoIncrement: true,
       primaryKey: true,
     },
-   
+
     reportId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Reports, // Can be both a string representing the table name or a Sequelize model
-            key: 'reportId', 
-        }
+      type: DataTypes.INTEGER,
+      references: {
+        model: Reports, // Can be both a string representing the table name or a Sequelize model
+        key: "reportId",
+      },
     },
     userId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Users, // Can be both a string representing the table name or a Sequelize model
-            key: 'userId', 
-        }
+      type: DataTypes.INTEGER,
+      references: {
+        model: Users, // Can be both a string representing the table name or a Sequelize model
+        key: "userId",
+      },
     },
     accessLevel: {
-        type: DataTypes.STRING(20),
-        allowNull: false,
+      type: DataTypes.STRING(20),
+      allowNull: false,
     },
-    
   },
   {
     // Other model options go here
-    sequelize, 
+    sequelize,
     modelName: "ReportAccess",
-   
   }
 );
 
-
+export interface ReportAccessInput {
+  accessId?: number;
+  reportId: number;
+  userId: number;
+  accessLevel: string;
+}
 
 export default ReportAccess;
