@@ -17,55 +17,49 @@ export const metadata: Metadata = {
   description: "Pension Systems",
 };
 
-const PerformanceMetrics: NextPage = () => {
+const ReportAccess: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
 
-  const [performanceMetricsData, setPerformanceMetricsData] = useState(
-    [] as any
-  );
-  const [investmentData, setInvestmentData] = useState([] as any);
+  const [reportAccessData, setReportAccessData] = useState([] as any);
+  const [reportData, setReportData] = useState([] as any);
+  const [userData, setUserData] = useState([] as any);
 
   const tableHeaders = [
-    { id: "metricName", title: "Name" },
-    { id: "investmentName", title: "Investment Name" },
-    { id: "metricValue", title: "Value" },
-    { id: "sDate", title: "Date" },
+    { id: "reportType", title: "Report Type" },
+    { id: "username", title: "User Name" },
+    { id: "accessLevel", title: "Access Level" },
   ];
 
   const inputArray: inputType[] = [
     {
-      name: "investmentId",
+      name: "reportId",
       type: "select",
-      outputName: "Investment Name",
-      placeholder: "Investment Name",
-      options: investmentData,
+      outputName: "Report Type",
+      placeholder: "Report Type",
+      options: reportData,
     },
     {
-      name: "metricName",
-      type: "text",
-      outputName: "Name",
-      placeholder: "Name",
+      name: "userId",
+      type: "select",
+      outputName: "User",
+      placeholder: "User",
+      options: userData,
     },
     {
-      name: "metricValue",
-      type: "number",
-      outputName: "Value",
-      placeholder: "Value",
-    },
-    {
-      name: "metricDate",
-      type: "date",
-      outputName: "Date",
-      placeholder: "Date",
+      name: "accessLevel",
+      type: "select",
+      outputName: "Access Level",
+      placeholder: "Access Level",
+      options: ["Read-Only", "Full-access"],
     },
   ];
 
   console.log(formstate, "formstate");
-  const url = "riskMetrics";
+  const url = "reportAccess";
   const handleSubmitForm = async (e: FormEvent<any>) =>
     handleSubmit(
       e,
@@ -77,7 +71,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getReportAccessData
     );
 
   const handleEditForm = async (e: FormEvent<any>) =>
@@ -91,7 +85,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getReportAccessData
     );
 
   const handleDeleteForm = async () =>
@@ -102,11 +96,11 @@ const PerformanceMetrics: NextPage = () => {
       setFormstate,
       setError,
       setKeyIndex,
-      formstate.metricId,
-      getPerformanceMetricsData
+      formstate.accessId,
+      getReportAccessData
     );
 
-  const getPerformanceMetricsData = async () => {
+  const getReportAccessData = async () => {
     try {
       const res: any = await api.get(url);
       if (res?.data?.payload instanceof Array) {
@@ -116,32 +110,49 @@ const PerformanceMetrics: NextPage = () => {
 
           return el;
         });
-        setPerformanceMetricsData(data);
+        setReportAccessData(data);
       }
     } catch {
-      return setPerformanceMetricsData([]);
+      return setReportAccessData([]);
     }
   };
 
-  const getInvestMents = async () => {
+  const getReports = async () => {
     try {
-      const res: any = await api.get("investment");
+      const res: any = await api.get("reports");
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          return { value: el.investmentId, label: el.investmentName };
+          return { value: el.reportId, label: el.reportType };
         });
-        setInvestmentData(data);
+        setReportData(data);
       } else {
-        setInvestmentData([]);
+        setReportData([]);
       }
     } catch {
-      setInvestmentData([]);
+      setReportData([]);
+    }
+  };
+
+  const getUsers = async () => {
+    try {
+      const res: any = await api.get("users");
+      if (res?.data?.payload instanceof Array) {
+        let data = res?.data?.payload.map((el: any) => {
+          return { value: el.userId, label: el.username };
+        });
+        setUserData(data);
+      } else {
+        setUserData([]);
+      }
+    } catch {
+      setUserData([]);
     }
   };
 
   const getData = async () => {
-    await getInvestMents();
-    await getPerformanceMetricsData();
+    await getUsers();
+    await getReports();
+    await getReportAccessData();
   };
 
   useEffect(() => {
@@ -151,9 +162,9 @@ const PerformanceMetrics: NextPage = () => {
   return (
     <>
       <FullTable
-        title="Risk Metrics List"
+        title="Report Access List"
         tableHeaders={tableHeaders}
-        data={performanceMetricsData}
+        data={reportAccessData}
         inputArray={inputArray}
         formstate={formstate}
         setFormstate={setFormstate}
@@ -171,4 +182,4 @@ const PerformanceMetrics: NextPage = () => {
   );
 };
 
-export default PerformanceMetrics;
+export default ReportAccess;

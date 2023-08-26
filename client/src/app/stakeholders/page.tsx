@@ -17,55 +17,52 @@ export const metadata: Metadata = {
   description: "Pension Systems",
 };
 
-const PerformanceMetrics: NextPage = () => {
+const Stakeholders: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
 
-  const [performanceMetricsData, setPerformanceMetricsData] = useState(
-    [] as any
-  );
-  const [investmentData, setInvestmentData] = useState([] as any);
+  const [stakeholdersData, setStakeholdersData] = useState([] as any);
 
   const tableHeaders = [
-    { id: "metricName", title: "Name" },
-    { id: "investmentName", title: "Investment Name" },
-    { id: "metricValue", title: "Value" },
-    { id: "sDate", title: "Date" },
+    { id: "stakeholderName", title: "Name" },
+    { id: "stakeholderType", title: "Type" },
+    { id: "stakeholderEmail", title: "Email" },
+    { id: "sDate", title: "Registration Date" },
   ];
 
   const inputArray: inputType[] = [
     {
-      name: "investmentId",
-      type: "select",
-      outputName: "Investment Name",
-      placeholder: "Investment Name",
-      options: investmentData,
-    },
-    {
-      name: "metricName",
+      name: "stakeholderName",
       type: "text",
-      outputName: "Name",
-      placeholder: "Name",
+      outputName: " Name",
+      placeholder: " Name",
     },
     {
-      name: "metricValue",
-      type: "number",
-      outputName: "Value",
-      placeholder: "Value",
+      name: "stakeholderType",
+      type: "select",
+      outputName: "Type",
+      placeholder: "Type",
+      options: ["Pension Fund Member", "Trustee", "Sponsor", "Regulator"],
     },
     {
-      name: "metricDate",
+      name: "stakeholderEmail",
+      type: "email",
+      outputName: "Email",
+      placeholder: "Email",
+    },
+    {
+      name: "registrationDate",
       type: "date",
-      outputName: "Date",
-      placeholder: "Date",
+      outputName: "Registration Date",
+      placeholder: "Registration Date",
     },
   ];
 
   console.log(formstate, "formstate");
-  const url = "riskMetrics";
+  const url = "stakeholders";
   const handleSubmitForm = async (e: FormEvent<any>) =>
     handleSubmit(
       e,
@@ -77,7 +74,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getStakeholdersData
     );
 
   const handleEditForm = async (e: FormEvent<any>) =>
@@ -91,7 +88,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getStakeholdersData
     );
 
   const handleDeleteForm = async () =>
@@ -102,46 +99,29 @@ const PerformanceMetrics: NextPage = () => {
       setFormstate,
       setError,
       setKeyIndex,
-      formstate.metricId,
-      getPerformanceMetricsData
+      formstate.stakeholderId,
+      getStakeholdersData
     );
 
-  const getPerformanceMetricsData = async () => {
+  const getStakeholdersData = async () => {
     try {
       const res: any = await api.get(url);
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          el.sDate = new Date(el.metricDate).toLocaleDateString("en-GB");
-          el.metricDate = String(el.metricDate).split("T")[0];
+          el.sDate = new Date(el.registrationDate).toLocaleDateString("en-GB");
+          el.registrationDate = String(el.registrationDate).split("T")[0];
 
           return el;
         });
-        setPerformanceMetricsData(data);
+        setStakeholdersData(data);
       }
     } catch {
-      return setPerformanceMetricsData([]);
-    }
-  };
-
-  const getInvestMents = async () => {
-    try {
-      const res: any = await api.get("investment");
-      if (res?.data?.payload instanceof Array) {
-        let data = res?.data?.payload.map((el: any) => {
-          return { value: el.investmentId, label: el.investmentName };
-        });
-        setInvestmentData(data);
-      } else {
-        setInvestmentData([]);
-      }
-    } catch {
-      setInvestmentData([]);
+      return setStakeholdersData([]);
     }
   };
 
   const getData = async () => {
-    await getInvestMents();
-    await getPerformanceMetricsData();
+    await getStakeholdersData();
   };
 
   useEffect(() => {
@@ -151,9 +131,9 @@ const PerformanceMetrics: NextPage = () => {
   return (
     <>
       <FullTable
-        title="Risk Metrics List"
+        title="Stakeholders List"
         tableHeaders={tableHeaders}
-        data={performanceMetricsData}
+        data={stakeholdersData}
         inputArray={inputArray}
         formstate={formstate}
         setFormstate={setFormstate}
@@ -171,4 +151,4 @@ const PerformanceMetrics: NextPage = () => {
   );
 };
 
-export default PerformanceMetrics;
+export default Stakeholders;

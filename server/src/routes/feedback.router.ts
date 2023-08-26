@@ -10,7 +10,7 @@ import { FeedbackService } from "../services/feedback.service";
 
 const FeedbackRouter = (app: Express) => {
   const feedbackService = new FeedbackService();
-  const url = "/Feedback";
+  const url = "/feedback";
 
   app.get(url, (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);

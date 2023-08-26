@@ -17,47 +17,39 @@ export const metadata: Metadata = {
   description: "Pension Systems",
 };
 
-const PerformanceMetrics: NextPage = () => {
+const Feedback: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
 
-  const [performanceMetricsData, setPerformanceMetricsData] = useState(
-    [] as any
-  );
-  const [investmentData, setInvestmentData] = useState([] as any);
+  const [feedbackData, setFeedbackData] = useState([] as any);
+  const [userData, setUserData] = useState([] as any);
 
   const tableHeaders = [
-    { id: "metricName", title: "Name" },
-    { id: "investmentName", title: "Investment Name" },
-    { id: "metricValue", title: "Value" },
+    { id: "username", title: "Username" },
+    { id: "feedbackText", title: "Text" },
+
     { id: "sDate", title: "Date" },
   ];
 
   const inputArray: inputType[] = [
     {
-      name: "investmentId",
+      name: "userId",
       type: "select",
-      outputName: "Investment Name",
-      placeholder: "Investment Name",
-      options: investmentData,
+      outputName: "Username",
+      placeholder: "Username",
+      options: userData,
     },
     {
-      name: "metricName",
-      type: "text",
-      outputName: "Name",
-      placeholder: "Name",
+      name: "feedbackText",
+      type: "textarea",
+      outputName: "Feedback Text",
+      placeholder: "Feedback Text",
     },
     {
-      name: "metricValue",
-      type: "number",
-      outputName: "Value",
-      placeholder: "Value",
-    },
-    {
-      name: "metricDate",
+      name: "feedbackDate",
       type: "date",
       outputName: "Date",
       placeholder: "Date",
@@ -65,7 +57,7 @@ const PerformanceMetrics: NextPage = () => {
   ];
 
   console.log(formstate, "formstate");
-  const url = "riskMetrics";
+  const url = "feedback";
   const handleSubmitForm = async (e: FormEvent<any>) =>
     handleSubmit(
       e,
@@ -77,7 +69,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getFeedbackData
     );
 
   const handleEditForm = async (e: FormEvent<any>) =>
@@ -91,7 +83,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getFeedbackData
     );
 
   const handleDeleteForm = async () =>
@@ -102,46 +94,46 @@ const PerformanceMetrics: NextPage = () => {
       setFormstate,
       setError,
       setKeyIndex,
-      formstate.metricId,
-      getPerformanceMetricsData
+      formstate.feedbackId,
+      getFeedbackData
     );
 
-  const getPerformanceMetricsData = async () => {
+  const getFeedbackData = async () => {
     try {
       const res: any = await api.get(url);
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          el.sDate = new Date(el.metricDate).toLocaleDateString("en-GB");
-          el.metricDate = String(el.metricDate).split("T")[0];
+          el.sDate = new Date(el.feedbackDate).toLocaleDateString("en-GB");
+          el.feedbackDate = String(el.feedbackDate).split("T")[0];
 
           return el;
         });
-        setPerformanceMetricsData(data);
+        setFeedbackData(data);
       }
     } catch {
-      return setPerformanceMetricsData([]);
+      return setFeedbackData([]);
     }
   };
 
-  const getInvestMents = async () => {
+  const getUsers = async () => {
     try {
-      const res: any = await api.get("investment");
+      const res: any = await api.get("users");
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          return { value: el.investmentId, label: el.investmentName };
+          return { value: el.userId, label: el.username };
         });
-        setInvestmentData(data);
+        setUserData(data);
       } else {
-        setInvestmentData([]);
+        setUserData([]);
       }
     } catch {
-      setInvestmentData([]);
+      setUserData([]);
     }
   };
 
   const getData = async () => {
-    await getInvestMents();
-    await getPerformanceMetricsData();
+    await getUsers();
+    await getFeedbackData();
   };
 
   useEffect(() => {
@@ -151,9 +143,9 @@ const PerformanceMetrics: NextPage = () => {
   return (
     <>
       <FullTable
-        title="Risk Metrics List"
+        title="Feedback List"
         tableHeaders={tableHeaders}
-        data={performanceMetricsData}
+        data={feedbackData}
         inputArray={inputArray}
         formstate={formstate}
         setFormstate={setFormstate}
@@ -171,4 +163,4 @@ const PerformanceMetrics: NextPage = () => {
   );
 };
 
-export default PerformanceMetrics;
+export default Feedback;

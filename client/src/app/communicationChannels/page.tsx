@@ -17,55 +17,41 @@ export const metadata: Metadata = {
   description: "Pension Systems",
 };
 
-const PerformanceMetrics: NextPage = () => {
+const CommunicationChannels: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
 
-  const [performanceMetricsData, setPerformanceMetricsData] = useState(
+  const [communicationChannelsData, setCommunicationChannelsData] = useState(
     [] as any
   );
-  const [investmentData, setInvestmentData] = useState([] as any);
 
   const tableHeaders = [
-    { id: "metricName", title: "Name" },
-    { id: "investmentName", title: "Investment Name" },
-    { id: "metricValue", title: "Value" },
-    { id: "sDate", title: "Date" },
+    { id: "channelName", title: "Name" },
+    { id: "channelType", title: "Type" },
   ];
 
   const inputArray: inputType[] = [
     {
-      name: "investmentId",
+      name: "channelName",
       type: "select",
-      outputName: "Investment Name",
-      placeholder: "Investment Name",
-      options: investmentData,
-    },
-    {
-      name: "metricName",
-      type: "text",
       outputName: "Name",
       placeholder: "Name",
+      options: ["Messaging", "Forum", "Email"],
     },
     {
-      name: "metricValue",
-      type: "number",
-      outputName: "Value",
-      placeholder: "Value",
-    },
-    {
-      name: "metricDate",
-      type: "date",
-      outputName: "Date",
-      placeholder: "Date",
+      name: "channelType",
+      type: "select",
+      outputName: "Description",
+      placeholder: "Description",
+      options: ["Real-time Chat", "Asynchronous Messaging"],
     },
   ];
 
   console.log(formstate, "formstate");
-  const url = "riskMetrics";
+  const url = "communicationChannels";
   const handleSubmitForm = async (e: FormEvent<any>) =>
     handleSubmit(
       e,
@@ -77,7 +63,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getcommunicationChannelsData
     );
 
   const handleEditForm = async (e: FormEvent<any>) =>
@@ -91,7 +77,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getcommunicationChannelsData
     );
 
   const handleDeleteForm = async () =>
@@ -102,46 +88,24 @@ const PerformanceMetrics: NextPage = () => {
       setFormstate,
       setError,
       setKeyIndex,
-      formstate.metricId,
-      getPerformanceMetricsData
+      formstate.channelId,
+      getcommunicationChannelsData
     );
 
-  const getPerformanceMetricsData = async () => {
+  const getcommunicationChannelsData = async () => {
     try {
       const res: any = await api.get(url);
       if (res?.data?.payload instanceof Array) {
-        let data = res?.data?.payload.map((el: any) => {
-          el.sDate = new Date(el.metricDate).toLocaleDateString("en-GB");
-          el.metricDate = String(el.metricDate).split("T")[0];
-
-          return el;
-        });
-        setPerformanceMetricsData(data);
+        let data = res?.data?.payload;
+        setCommunicationChannelsData(data);
       }
     } catch {
-      return setPerformanceMetricsData([]);
-    }
-  };
-
-  const getInvestMents = async () => {
-    try {
-      const res: any = await api.get("investment");
-      if (res?.data?.payload instanceof Array) {
-        let data = res?.data?.payload.map((el: any) => {
-          return { value: el.investmentId, label: el.investmentName };
-        });
-        setInvestmentData(data);
-      } else {
-        setInvestmentData([]);
-      }
-    } catch {
-      setInvestmentData([]);
+      return setCommunicationChannelsData([]);
     }
   };
 
   const getData = async () => {
-    await getInvestMents();
-    await getPerformanceMetricsData();
+    await getcommunicationChannelsData();
   };
 
   useEffect(() => {
@@ -151,9 +115,9 @@ const PerformanceMetrics: NextPage = () => {
   return (
     <>
       <FullTable
-        title="Risk Metrics List"
+        title="Communication Channel List"
         tableHeaders={tableHeaders}
-        data={performanceMetricsData}
+        data={communicationChannelsData}
         inputArray={inputArray}
         formstate={formstate}
         setFormstate={setFormstate}
@@ -171,4 +135,4 @@ const PerformanceMetrics: NextPage = () => {
   );
 };
 
-export default PerformanceMetrics;
+export default CommunicationChannels;

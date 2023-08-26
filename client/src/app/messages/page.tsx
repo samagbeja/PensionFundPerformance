@@ -17,55 +17,61 @@ export const metadata: Metadata = {
   description: "Pension Systems",
 };
 
-const PerformanceMetrics: NextPage = () => {
+const Messages: NextPage = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [formstate, setFormstate] = useState({} as any);
   const [error, setError] = useState({} as any);
   const [keyIndex, setKeyIndex] = useState(1);
   const [messageObj, setMessageObj] = useState({} as any);
 
-  const [performanceMetricsData, setPerformanceMetricsData] = useState(
-    [] as any
-  );
-  const [investmentData, setInvestmentData] = useState([] as any);
+  const [messagesData, setMessagesData] = useState([] as any);
+  const [stakeholdersData, setStakeholdersData] = useState([] as any);
 
   const tableHeaders = [
-    { id: "metricName", title: "Name" },
-    { id: "investmentName", title: "Investment Name" },
-    { id: "metricValue", title: "Value" },
+    { id: "senderName", title: "Sender Name" },
+    { id: "recieverName", title: "Reciever Name" },
+    { id: "subject", title: "Subject" },
+    { id: "content", title: "Content" },
     { id: "sDate", title: "Date" },
   ];
 
   const inputArray: inputType[] = [
     {
-      name: "investmentId",
+      name: "senderId",
       type: "select",
-      outputName: "Investment Name",
-      placeholder: "Investment Name",
-      options: investmentData,
+      outputName: "Sender Name",
+      placeholder: "Sender Name",
+      options: stakeholdersData,
     },
     {
-      name: "metricName",
+      name: "recieverId",
+      type: "select",
+      outputName: "Reciever Name",
+      placeholder: "Reciever Name",
+      options: stakeholdersData,
+    },
+    {
+      name: "subject",
       type: "text",
-      outputName: "Name",
-      placeholder: "Name",
+      outputName: "Subject",
+      placeholder: "Subject",
     },
     {
-      name: "metricValue",
-      type: "number",
-      outputName: "Value",
-      placeholder: "Value",
+      name: "content",
+      type: "textarea",
+      outputName: "Content",
+      placeholder: "Content",
     },
     {
-      name: "metricDate",
+      name: "sentDate",
       type: "date",
-      outputName: "Date",
-      placeholder: "Date",
+      outputName: "Sent Date",
+      placeholder: "Sent Date",
     },
   ];
 
   console.log(formstate, "formstate");
-  const url = "riskMetrics";
+  const url = "messages";
   const handleSubmitForm = async (e: FormEvent<any>) =>
     handleSubmit(
       e,
@@ -77,7 +83,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getMessagesData
     );
 
   const handleEditForm = async (e: FormEvent<any>) =>
@@ -91,7 +97,7 @@ const PerformanceMetrics: NextPage = () => {
       setKeyIndex,
       setFormstate,
       setMessageObj,
-      getPerformanceMetricsData
+      getMessagesData
     );
 
   const handleDeleteForm = async () =>
@@ -102,46 +108,46 @@ const PerformanceMetrics: NextPage = () => {
       setFormstate,
       setError,
       setKeyIndex,
-      formstate.metricId,
-      getPerformanceMetricsData
+      formstate.messageId,
+      getMessagesData
     );
 
-  const getPerformanceMetricsData = async () => {
+  const getMessagesData = async () => {
     try {
       const res: any = await api.get(url);
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          el.sDate = new Date(el.metricDate).toLocaleDateString("en-GB");
-          el.metricDate = String(el.metricDate).split("T")[0];
+          el.sDate = new Date(el.sentDate).toLocaleDateString("en-GB");
+          el.sentDate = String(el.sentDate).split("T")[0];
 
           return el;
         });
-        setPerformanceMetricsData(data);
+        setMessagesData(data);
       }
     } catch {
-      return setPerformanceMetricsData([]);
+      return setMessagesData([]);
     }
   };
 
-  const getInvestMents = async () => {
+  const getStakeholders = async () => {
     try {
-      const res: any = await api.get("investment");
+      const res: any = await api.get("stakeholders");
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          return { value: el.investmentId, label: el.investmentName };
+          return { value: el.stakeholderId, label: el.stakeholderName };
         });
-        setInvestmentData(data);
+        setStakeholdersData(data);
       } else {
-        setInvestmentData([]);
+        setStakeholdersData([]);
       }
     } catch {
-      setInvestmentData([]);
+      setStakeholdersData([]);
     }
   };
 
   const getData = async () => {
-    await getInvestMents();
-    await getPerformanceMetricsData();
+    await getStakeholders();
+    await getMessagesData();
   };
 
   useEffect(() => {
@@ -151,9 +157,9 @@ const PerformanceMetrics: NextPage = () => {
   return (
     <>
       <FullTable
-        title="Risk Metrics List"
+        title="Messages List"
         tableHeaders={tableHeaders}
-        data={performanceMetricsData}
+        data={messagesData}
         inputArray={inputArray}
         formstate={formstate}
         setFormstate={setFormstate}
@@ -171,4 +177,4 @@ const PerformanceMetrics: NextPage = () => {
   );
 };
 
-export default PerformanceMetrics;
+export default Messages;

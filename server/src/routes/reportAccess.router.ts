@@ -8,9 +8,9 @@ import {
 } from "../utils/validate";
 import { ReportAccessService } from "../services/reportAccess.service";
 
-const ReportsRouter = (app: Express) => {
+const ReportsAccessRouter = (app: Express) => {
   const reportAccessService = new ReportAccessService();
-  const url = "/Reports";
+  const url = "/reportAccess";
 
   app.get(url, (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
@@ -68,4 +68,4 @@ const ReportsRouter = (app: Express) => {
   });
 };
 
-export default ReportsRouter;
+export default ReportsAccessRouter;

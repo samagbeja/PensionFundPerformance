@@ -10,7 +10,7 @@ import { ReportsService } from "../services/reports.service";
 
 const ReportsRouter = (app: Express) => {
   const reportsService = new ReportsService();
-  const url = "/Reports";
+  const url = "/reports";
 
   app.get(url, (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);

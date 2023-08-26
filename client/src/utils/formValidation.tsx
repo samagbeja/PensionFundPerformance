@@ -8,7 +8,9 @@ import {
   InputLabel,
   MenuItem,
   Typography,
+  TextareaAutosize,
 } from "@mui/material";
+
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export interface inputType {
@@ -93,6 +95,7 @@ export const presentForm = (
       case "password":
       case "date":
       case "number":
+      case "textarea":
         return (
           <Wrapper key={`${idx}C`}>
             <Typography style={{ fontWeight: "bold", fontSize: "0.8em" }}>
@@ -103,6 +106,8 @@ export const presentForm = (
               margin="normal"
               required
               fullWidth
+              multiline={el?.type === "textarea"}
+              minRows={3}
               // label={el.placeholder}
               sx={{
                 borderColor: errorState[el.name] && "red",

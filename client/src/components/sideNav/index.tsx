@@ -33,11 +33,12 @@ export const SideNav = (props: SideNavInterface) => {
       sx={{
         height: "100%",
         "& .simplebar-content": {
-          height: "100%",
+          height: "100vh",
         },
         "& .simplebar-scrollbar:before": {
           background: "neutral.400",
         },
+        overflow: "auto",
       }}
     >
       <Box
