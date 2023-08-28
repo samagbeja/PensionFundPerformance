@@ -1,8 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../utils/sequelize";
 
-
-
 class Stakeholders extends Model {}
 
 Stakeholders.init(
@@ -13,33 +11,37 @@ Stakeholders.init(
       autoIncrement: true,
       primaryKey: true,
     },
-   
+
     stakeholderType: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     stakeholderName: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     stakeholderEmail: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     registrationDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
+      type: DataTypes.DATE,
+      allowNull: false,
     },
-    
-    
   },
   {
     // Other model options go here
-    sequelize, 
+    sequelize,
     modelName: "Stakeholders",
-   
   }
 );
 
+export interface StakeholdersInput {
+  stakeholderId?: number;
+  stakeholderType: string;
+  stakeholderName: string;
+  stakeholderEmail: string;
+  registrationDate: Date;
+}
 
 export default Stakeholders;

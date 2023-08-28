@@ -2,8 +2,6 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../utils/sequelize";
 import Stakeholders from "./stakeholders.schema";
 
-
-
 class Messages extends Model {}
 
 Messages.init(
@@ -14,45 +12,48 @@ Messages.init(
       autoIncrement: true,
       primaryKey: true,
     },
-   
+
     senderId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Stakeholders, // Can be both a string representing the table name or a Sequelize model
-            key: 'stakeholderId'
-        }
+      type: DataTypes.INTEGER,
+      references: {
+        model: Stakeholders, // Can be both a string representing the table name or a Sequelize model
+        key: "stakeholderId",
+      },
     },
     recieverId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Stakeholders, // Can be both a string representing the table name or a Sequelize model
-            key: 'stakeholderId'
-        }
+      type: DataTypes.INTEGER,
+      references: {
+        model: Stakeholders, // Can be both a string representing the table name or a Sequelize model
+        key: "stakeholderId",
+      },
     },
     subject: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     sentDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
+      type: DataTypes.DATE,
+      allowNull: false,
     },
-    
   },
   {
     // Other model options go here
-    sequelize, 
+    sequelize,
     modelName: "Messages",
-   
   }
 );
 
-
-
-
+export interface MessagesInput {
+  messageId?: number;
+  senderId: number;
+  recieverId: number;
+  subject: string;
+  content: string;
+  sentDate: Date;
+}
 
 export default Messages;

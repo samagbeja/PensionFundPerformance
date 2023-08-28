@@ -53,4 +53,76 @@ export const items = [
       </SvgIcon>
     ),
   },
+  {
+    title: "Risk Metrics",
+    path: "/riskMetrics",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Web Applications",
+    path: "/webApplications",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Communication Channels",
+    path: "/communicationChannels",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Stakeholders",
+    path: "/stakeholders",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Messages",
+    path: "/messages",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Reports",
+    path: "/reports",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "ReportAccess",
+    path: "/reportAccess",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Feedback",
+    path: "/feedback",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
 ];

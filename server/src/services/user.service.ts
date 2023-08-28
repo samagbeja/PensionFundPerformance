@@ -5,6 +5,21 @@ import { Response } from "express";
 import { signJwt } from "../utils/jwt";
 
 export class UserService {
+  async fetchAll(res: Response) {
+    try {
+      let records: any = await Users.findAll();
+      let arrRecord = [];
+      for (let record of records) {
+        record = record.get();
+        arrRecord.push({
+          ...record,
+        });
+      }
+      return presentMessage(res, 200, arrRecord, "Record Fetched");
+    } catch (err) {
+      return presentMessage(res, 500, null, "Unexpected Server Error" + err);
+    }
+  }
   async signup(res: Response, input: userInput) {
     try {
       const { username, email, userType, password } = input;

@@ -2,6 +2,7 @@ import { Express, Request, Response } from "express";
 
 // import { signJwt } from "../utils/jwt";
 import {
+  authorize,
   //   authorize,
   establishValidateRequest,
   //   presentMessage,
@@ -34,6 +35,15 @@ const userRouter = (app: Express) => {
   //   });
 
   const userService = new UserService();
+
+  app.get("/users", (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return userService.fetchAll(res);
+    }
+    return;
+  });
   app.post("/signup", (req: Request, res: Response) => {
     console.log(' I am here')
     if (
