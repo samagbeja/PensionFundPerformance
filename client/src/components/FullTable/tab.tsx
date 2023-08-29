@@ -40,55 +40,53 @@ export default (props: any) => {
   return (
     <Card>
       {/* <Scrollbar style={{ height: "auto" }}> */}
-      <Box sx={{ minWidth: 800 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {tableHeaders.map((item: any, index: number) => (
-                <TableCell key={`H${index}`}>{item?.title}</TableCell>
-              ))}
-              {tableHeaders.length && !noAction && (
-                <TableCell>Actions</TableCell>
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((item: any, index: number) => {
-              return (
-                <TableRow hover key={`C${index}`}>
-                  {tableHeaders.map((citem: any, idx: number) => (
-                    <TableCell key={`HC${idx}`}>{item[citem?.id]}</TableCell>
-                  ))}
-                  {tableHeaders.length && !noAction && (
-                    <TableCell
-                      style={{ display: "flex", justifyContent: "flex-start" }}
+      {/* <Box sx={{ minWidth: 800 }}> */}
+      <Table>
+        <TableHead>
+          <TableRow>
+            {tableHeaders.map((item: any, index: number) => (
+              <TableCell key={`H${index}`}>{item?.title}</TableCell>
+            ))}
+            {tableHeaders.length && !noAction && <TableCell>Actions</TableCell>}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {items.map((item: any, index: number) => {
+            return (
+              <TableRow hover key={`C${index}`}>
+                {tableHeaders.map((citem: any, idx: number) => (
+                  <TableCell key={`HC${idx}`}>{item[citem?.id]}</TableCell>
+                ))}
+                {tableHeaders.length && !noAction && (
+                  <TableCell
+                    style={{ display: "flex", justifyContent: "flex-start" }}
+                  >
+                    <span
+                      onClick={() => handleEdit(item)}
+                      title="Edit"
+                      style={{ marginRight: 10, cursor: "pointer" }}
                     >
-                      <span
-                        onClick={() => handleEdit(item)}
-                        title="Edit"
-                        style={{ marginRight: 10, cursor: "pointer" }}
-                      >
-                        <SvgIcon fontSize="small" color="primary">
-                          <PencilIcon />
-                        </SvgIcon>
-                      </span>
-                      <span
-                        onClick={() => handleDelete(item)}
-                        style={{ cursor: "pointer" }}
-                        title="Delete"
-                      >
-                        <SvgIcon fontSize="small" color="error">
-                          <TrashIcon />
-                        </SvgIcon>
-                      </span>
-                    </TableCell>
-                  )}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </Box>
+                      <SvgIcon fontSize="small" color="primary">
+                        <PencilIcon />
+                      </SvgIcon>
+                    </span>
+                    <span
+                      onClick={() => handleDelete(item)}
+                      style={{ cursor: "pointer" }}
+                      title="Delete"
+                    >
+                      <SvgIcon fontSize="small" color="error">
+                        <TrashIcon />
+                      </SvgIcon>
+                    </span>
+                  </TableCell>
+                )}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+      {/* </Box> */}
       {/* </Scrollbar> */}
       <TablePagination
         component="div"
