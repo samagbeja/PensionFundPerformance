@@ -211,7 +211,7 @@ const Home: NextPage = () => {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} style={{ marginTop: "20px" }}>
+            <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
               <Card>
                 <CardContent style={{ padding: "10px", minHeight: "300px" }}>
                   <List
