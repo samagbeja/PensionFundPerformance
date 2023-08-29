@@ -21,6 +21,15 @@ const CommunicationChannelsRouter = (app: Express) => {
     return;
   });
 
+  app.get(`${url}/count`, (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return communicationChannelsService.fetchCount(res);
+    }
+    return;
+  });
+
   app.post(url, (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
     if (

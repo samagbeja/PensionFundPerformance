@@ -4,6 +4,7 @@ import { Response } from "express";
 import CommunicationChannels, {
   CommunicationChannelsInput,
 } from "../schema/communicationChannels.schema";
+import sequelize from "../utils/sequelize";
 
 export class CommunicationChannelsService {
   async fetchAll(res: Response) {
@@ -11,6 +12,30 @@ export class CommunicationChannelsService {
       let records: any = await CommunicationChannels.findAll();
 
       //add fund Assets
+      let arrRecord = [];
+      for (let record of records) {
+        record = record.get();
+        arrRecord.push({
+          ...record,
+        });
+      }
+
+      return presentMessage(res, 200, arrRecord, "Record Fetched");
+    } catch (err) {
+      return presentMessage(res, 500, null, "Unexpected Server Error" + err);
+    }
+  }
+
+  async fetchCount(res: Response) {
+    try {
+      let records: any = await CommunicationChannels.findAll({
+        attributes: [
+          "channelType",
+          [sequelize.fn("COUNT", sequelize.col("channelType")), "count"],
+        ],
+        group: "channelType",
+      });
+
       let arrRecord = [];
       for (let record of records) {
         record = record.get();

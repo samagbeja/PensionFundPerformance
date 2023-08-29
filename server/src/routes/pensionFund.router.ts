@@ -20,6 +20,23 @@ const pensionFundRouter = (app: Express) => {
     return;
   });
 
+  app.get("/fundactive", (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return pensionFundService.fetchAllActive(res);
+    }
+    return;
+  });
+
+  app.get("/fund/investment", (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      return pensionFundService.fetchFundInv(res);
+    }
+    return;
+  });
+
   app.post("/fund", (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
     if (

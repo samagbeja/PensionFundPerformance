@@ -21,6 +21,24 @@ const performanceMetricsRouter = (app: Express) => {
     return;
   });
 
+  app.get(`${url}/investment`, (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return performanceMetricsService.fetchPerfInv(res);
+    }
+    return;
+  });
+
+  app.get(`${url}/fund`, (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return performanceMetricsService.fetchPerfFund(res);
+    }
+    return;
+  });
+
   app.post(url, (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
     if (
