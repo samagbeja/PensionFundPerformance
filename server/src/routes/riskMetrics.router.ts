@@ -21,6 +21,15 @@ const riskMetricsRouter = (app: Express) => {
     return;
   });
 
+  app.get(`${url}/investment`, (req: Request, res: Response) => {
+    let authorizeRequest = authorize(req, res);
+    if (authorizeRequest) {
+      ///service
+      return riskMetricsService.fetchRiskInv(res);
+    }
+    return;
+  });
+
   app.post(url, (req: Request, res: Response) => {
     let authorizeRequest = authorize(req, res);
     if (

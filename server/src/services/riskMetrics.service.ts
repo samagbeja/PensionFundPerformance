@@ -26,6 +26,31 @@ export class RiskMetricsService {
     }
   }
 
+  async fetchRiskInv(res: Response) {
+    try {
+      let recordsInv: any = await Investments.findAll();
+      let records: any = await RiskMetrics.findAll();
+
+      //add fund Assets
+      let arrRecord = [];
+      for (let record of records) {
+        let invRecord: any = recordsInv.find(
+          (el: any) => el.investmentId === record.investmentId
+        );
+
+        record = record.get();
+        arrRecord.push({
+          ...record,
+          investmentName: invRecord?.investmentName,
+        });
+      }
+
+      return presentMessage(res, 200, arrRecord, "Record Fetched");
+    } catch (err) {
+      return presentMessage(res, 500, null, "Unexpected Server Error" + err);
+    }
+  }
+
   async add(res: Response, input: RiskMetricsInput) {
     try {
       const { investmentId, riskCategory, riskIndicator, riskLevel, riskDate } =
