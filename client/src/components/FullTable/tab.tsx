@@ -32,6 +32,7 @@ export default (props: any) => {
     rowsPerPage = 0,
     handleEdit,
     handleDelete,
+    noAction,
   } = props;
 
   console.log(items, "items");
@@ -46,7 +47,9 @@ export default (props: any) => {
               {tableHeaders.map((item: any, index: number) => (
                 <TableCell key={`H${index}`}>{item?.title}</TableCell>
               ))}
-              {tableHeaders.length && <TableCell>Actions</TableCell>}
+              {tableHeaders.length && !noAction && (
+                <TableCell>Actions</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -56,7 +59,7 @@ export default (props: any) => {
                   {tableHeaders.map((citem: any, idx: number) => (
                     <TableCell key={`HC${idx}`}>{item[citem?.id]}</TableCell>
                   ))}
-                  {tableHeaders.length && (
+                  {tableHeaders.length && !noAction && (
                     <TableCell
                       style={{ display: "flex", justifyContent: "flex-start" }}
                     >
