@@ -143,11 +143,9 @@ const Home: NextPage = () => {
                 <CardContent style={{ padding: "10px" }}>Dashboard</CardContent>
               </Card>
             </Grid>
-            <Grid xs={12} style={{ marginTop: "20px" }}>
+            <Grid xs={12} md={6} style={{ marginTop: "20px" }}>
               <Card>
-                <CardContent
-                  style={{ padding: "10px", minHeight: "300px", width: "100%" }}
-                >
+                <CardContent style={{ padding: "10px", minHeight: "300px" }}>
                   <BarChart
                     title="Total Investment Per Fund"
                     label="Investment per Fund"
