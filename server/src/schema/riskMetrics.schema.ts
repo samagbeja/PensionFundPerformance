@@ -28,7 +28,7 @@ RiskMetrics.init(
       allowNull: false,
     },
     riskLevel: {
-      type: DataTypes.DECIMAL(18, 4),
+      type: DataTypes.DECIMAL(18, 2),
       allowNull: false,
     },
     riskDate: {

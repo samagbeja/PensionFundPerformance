@@ -21,6 +21,7 @@ export interface inputType {
   placeholder?: string;
   options?: any[];
   optionMode?: string;
+  disabled?: boolean;
 }
 interface outputType {
   [key: string]: boolean | string;
@@ -109,6 +110,7 @@ export const presentForm = (
               multiline={el?.type === "textarea"}
               minRows={3}
               // label={el.placeholder}
+              disabled={el.disabled}
               sx={{
                 borderColor: errorState[el.name] && "red",
                 marginTop: "1px",
