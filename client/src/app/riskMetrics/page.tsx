@@ -30,9 +30,10 @@ const PerformanceMetrics: NextPage = () => {
   const [investmentData, setInvestmentData] = useState([] as any);
 
   const tableHeaders = [
-    { id: "metricName", title: "Name" },
+    { id: "riskCategory", title: "Risk Category" },
     { id: "investmentName", title: "Investment Name" },
-    { id: "metricValue", title: "Value" },
+    { id: "riskLevel", title: "Risk Level" },
+    { id: "riskIndicator", title: "Risk Indicator" },
     { id: "sDate", title: "Date" },
   ];
 
@@ -45,22 +46,30 @@ const PerformanceMetrics: NextPage = () => {
       options: investmentData,
     },
     {
-      name: "metricName",
-      type: "text",
-      outputName: "Name",
-      placeholder: "Name",
+      name: "riskCategory",
+      type: "select",
+      outputName: "Risk Category",
+      placeholder: "Risk Category",
+      options: ["Market Risk", "Credit Risk"],
     },
     {
-      name: "metricValue",
+      name: "riskLevel",
       type: "number",
-      outputName: "Value",
-      placeholder: "Value",
+      outputName: "Risk Level",
+      placeholder: "Risk Level",
     },
     {
-      name: "metricDate",
+      name: "riskDate",
       type: "date",
       outputName: "Date",
       placeholder: "Date",
+    },
+    {
+      name: "riskIndicator",
+      type: "text",
+      outputName: "Risk Indicator",
+      placeholder: "Risk Indicator",
+      disabled: true,
     },
   ];
 
@@ -102,7 +111,7 @@ const PerformanceMetrics: NextPage = () => {
       setFormstate,
       setError,
       setKeyIndex,
-      formstate.metricId,
+      formstate.riskId,
       getPerformanceMetricsData
     );
 
@@ -111,8 +120,8 @@ const PerformanceMetrics: NextPage = () => {
       const res: any = await api.get(url);
       if (res?.data?.payload instanceof Array) {
         let data = res?.data?.payload.map((el: any) => {
-          el.sDate = new Date(el.metricDate).toLocaleDateString("en-GB");
-          el.metricDate = String(el.metricDate).split("T")[0];
+          el.sDate = new Date(el.riskDate).toLocaleDateString("en-GB");
+          el.riskDate = String(el.riskDate).split("T")[0];
 
           return el;
         });
@@ -143,6 +152,19 @@ const PerformanceMetrics: NextPage = () => {
     await getInvestMents();
     await getPerformanceMetricsData();
   };
+
+  useEffect(() => {
+    let val = "";
+    if (formstate.riskLevel > 69) {
+      val = "HIGH";
+    } else if (formstate.riskLevel >= 40) {
+      val = "MEDIUM";
+    } else if (formstate.riskLevel >= 0) {
+      val = "LOW";
+    }
+
+    setFormstate({ ...formstate, riskIndicator: val });
+  }, [formstate.riskLevel]);
 
   useEffect(() => {
     getData();
